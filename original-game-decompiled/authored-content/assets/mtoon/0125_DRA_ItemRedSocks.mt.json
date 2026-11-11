@@ -1,0 +1,204 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 125,
+ "name": "DRA_ItemRedSocks.mt",
+ "sourceStream": 39,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 39501023,
+ "frameDataPosition": 58398745,
+ "sizeOfFrameData": 9983,
+ "width": 129,
+ "height": 110,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 129,
+  "bottom": 110
+ },
+ "registrationPoint": {
+  "x": -29,
+  "y": -1
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": false,
+ "encodingFlags": "0x20000000",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [
+  {
+   "startFrame": 0,
+   "endFrame": 0,
+   "unk14": 0,
+   "name": "up"
+  },
+  {
+   "startFrame": 1,
+   "endFrame": 3,
+   "unk14": 0,
+   "name": "highlight"
+  },
+  {
+   "startFrame": 4,
+   "endFrame": 4,
+   "unk14": 0,
+   "name": "reveal"
+  }
+ ],
+ "numFrames": 5,
+ "sheet": {
+  "columns": 5,
+  "rows": 1,
+  "cellWidth": 129,
+  "cellHeight": 110,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 127,
+    "bottom": 110
+   },
+   "dataOffset": 0,
+   "fileOffset": 58398745,
+   "compressedSize": 1812,
+   "decompressedSize": 14080,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 128,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 127,
+   "rleHeight": 110,
+   "pixelsWritten": 13970,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    129,
+    110
+   ]
+  },
+  {
+   "index": 1,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 127,
+    "bottom": 110
+   },
+   "dataOffset": 1812,
+   "fileOffset": 58400557,
+   "compressedSize": 2192,
+   "decompressedSize": 14080,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 128,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 127,
+   "rleHeight": 110,
+   "pixelsWritten": 13970,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    129,
+    0,
+    129,
+    110
+   ]
+  },
+  {
+   "index": 2,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 127,
+    "bottom": 110
+   },
+   "dataOffset": 4004,
+   "fileOffset": 58402749,
+   "compressedSize": 2300,
+   "decompressedSize": 14080,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 128,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 127,
+   "rleHeight": 110,
+   "pixelsWritten": 13970,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    258,
+    0,
+    129,
+    110
+   ]
+  },
+  {
+   "index": 3,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 127,
+    "bottom": 110
+   },
+   "dataOffset": 6304,
+   "fileOffset": 58405049,
+   "compressedSize": 1812,
+   "decompressedSize": 14080,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 128,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 127,
+   "rleHeight": 110,
+   "pixelsWritten": 13970,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    387,
+    0,
+    129,
+    110
+   ]
+  },
+  {
+   "index": 4,
+   "rect": {
+    "left": 1,
+    "top": 0,
+    "right": 129,
+    "bottom": 110
+   },
+   "dataOffset": 8116,
+   "fileOffset": 58406861,
+   "compressedSize": 1867,
+   "decompressedSize": 14080,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 128,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 128,
+   "rleHeight": 110,
+   "pixelsWritten": 14080,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    516,
+    0,
+    129,
+    110
+   ]
+  }
+ ]
+}

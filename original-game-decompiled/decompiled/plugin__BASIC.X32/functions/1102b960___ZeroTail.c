@@ -1,0 +1,40 @@
+
+/* ==== __ZeroTail @ 1102b960 ==== 
+ * signature: undefined4 __cdecl __ZeroTail(int param_1, int param_2)
+ * body: 1102b960-1102b9c3
+ * note: Library Function - Single Match  __ZeroTail  Library: Visual Studio 1998 Release
+ */
+
+/* Library Function - Single Match
+    __ZeroTail
+   
+   Library: Visual Studio 1998 Release */
+
+undefined4 __cdecl __ZeroTail(int param_1,int param_2)
+
+{
+  byte bVar1;
+  int iVar2;
+  int *piVar3;
+  
+  iVar2 = (int)(param_2 + (param_2 >> 0x1f & 0x1fU)) >> 5;
+  bVar1 = (byte)(param_2 >> 0x1f);
+  if ((*(uint *)(param_1 + iVar2 * 4) &
+      ~(-1 << (0x1f - ((((byte)param_2 ^ bVar1) - bVar1 & 0x1f ^ bVar1) - bVar1) & 0x1f))) != 0) {
+    return 0;
+  }
+  iVar2 = iVar2 + 1;
+  if (iVar2 < 3) {
+    piVar3 = (int *)(param_1 + iVar2 * 4);
+    do {
+      if (*piVar3 != 0) {
+        return 0;
+      }
+      piVar3 = piVar3 + 1;
+      iVar2 = iVar2 + 1;
+    } while (iVar2 < 3);
+  }
+  return 1;
+}
+
+

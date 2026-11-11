@@ -1,0 +1,22 @@
+
+/* ==== FUN_12021f60 @ 12021f60 ==== 
+ * signature: undefined4 __cdecl FUN_12021f60(int param_1)
+ * body: 12021f60-12021fbd
+ */
+
+undefined4 __cdecl FUN_12021f60(int param_1)
+
+{
+  code *pcVar1;
+  int local_8;
+  int iStack_4;
+  
+  pcVar1 = (code *)FUN_12027370(param_1,0,0x21,&local_8);
+  DAT_12039a9c = (*pcVar1)(local_8,1,param_1);
+  pcVar1 = (code *)FUN_12027370(param_1,0,0x21,&iStack_4);
+  DAT_12039a9c = (*pcVar1)(iStack_4,1,param_1 + 10);
+  *(byte *)(param_1 + 0x20) = *(byte *)(param_1 + 0x20) & 0xfe;
+  return 0;
+}
+
+

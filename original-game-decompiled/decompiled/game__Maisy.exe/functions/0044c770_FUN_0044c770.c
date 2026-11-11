@@ -1,0 +1,19 @@
+
+/* ==== FUN_0044c770 @ 0044c770 ==== 
+ * signature: LRESULT __fastcall FUN_0044c770(int param_1)
+ * body: 0044c770-0044c78a
+ */
+
+LRESULT __fastcall FUN_0044c770(int param_1)
+
+{
+  LRESULT LVar1;
+  
+  if (*(HWND *)(param_1 + 0x7e) == (HWND)0x0) {
+    return 0;
+  }
+  LVar1 = SendMessageA(*(HWND *)(param_1 + 0x7e),0x46f,0,0);
+  return LVar1;
+}
+
+

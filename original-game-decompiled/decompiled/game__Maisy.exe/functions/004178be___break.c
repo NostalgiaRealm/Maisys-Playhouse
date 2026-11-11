@@ -1,0 +1,17 @@
+
+/* ==== __break @ 004178be ==== 
+ * signature: noreturn undefined __stdcall __break(void)
+ * body: 004178be-004178be
+ */
+
+void __break(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+

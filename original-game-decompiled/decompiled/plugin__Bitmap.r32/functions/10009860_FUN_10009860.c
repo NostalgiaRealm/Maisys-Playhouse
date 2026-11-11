@@ -1,0 +1,19 @@
+
+/* ==== FUN_10009860 @ 10009860 ==== 
+ * signature: undefined __stdcall FUN_10009860(void)
+ * body: 10009860-10009897
+ */
+
+void FUN_10009860(void)
+
+{
+  PTR_FUN_1001321c = FUN_10009d70;
+  PTR_FUN_10013218 = FUN_1000a1d0;
+  PTR_FUN_10013220 = FUN_10009e00;
+  PTR_FUN_10013224 = FUN_10009d10;
+  PTR_FUN_10013228 = FUN_10009de0;
+  PTR_FUN_1001322c = FUN_1000a1d0;
+  return;
+}
+
+

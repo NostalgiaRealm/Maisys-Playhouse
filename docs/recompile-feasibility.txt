@@ -1,0 +1,130 @@
+Maisy's Playhouse (1999): preliminary x86-to-WebAssembly feasibility
+Investigation date: 2026-11-11
+Scope: static disc/binary inspection and read-only examination of the existing A2 recompiler. No Maisy port, build, original-game execution, or browser gameplay test was performed.
+
+Conclusion
+----------
+Static x86-to-WebAssembly recompilation is technically plausible and worth an early interactive proof. The executable and six plug-ins are conventional PE32 Intel x86 modules with ordinary code sections and relocation data; they are suitable inputs for further native analysis. This does not establish complete instruction coverage or prove that the game can already run in the browser.
+
+The A2 recompiler offers a substantial starting point for instruction translation, but it is not a general Win32 compatibility layer. Maisy would require substantial new module-loading, callback, GDI, WinMM/media, and browser-scheduling support. No evidence found here justifies claiming a drop-in conversion or guaranteed performance.
+
+Disc and main program
+---------------------
+ISO: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/Original/maisycd/MAISY_CD.iso
+ISO file size: 315,371,520 bytes.
+7-Zip identified an ISO filesystem and listed 363 file records and 29 directories. Some catalog names occur more than once in the listing; this is not a claim of 363 distinct pathname strings.
+No filesystem member named spel.dat was found in the full listing.
+
+Main program:
+  ISO member: z_data/Maisy.exe
+  Bytes: 1,085,952
+  SHA-256: a72b353d62932da2f273c495c6df4fc7bb5fdb1de035984bd446951fe218c5b0
+  PE machine: 0x014c (Intel x86), PE32 GUI
+  Preferred image base: 0x00400000
+  Entry point: 0x00491820
+  .text virtual size: 771,786 bytes
+  Version FileDescription: mTropolis 32-Bit Windows Player.
+  Version FileVersion: 2, 0, 0, 0
+  Version CompanyName: mFactory/Quark, Inc.
+  Version OriginalFilename: mTplay32.exe
+
+The main file has ordinary .text/.rdata/.data/.idata/.rsrc/.reloc sections and .text entropy approximately 6.45 bits/byte. No obvious whole-file packing is indicated by that layout, but this is not an exhaustive packing or self-modifying-code assessment.
+
+REA inspect_pe_resources evidence:
+  ev_8132f4c73182610beaaead853067c627e78cb3ff056ac23d459d5962c7ffb690
+  112 resources, 233 examined entries, reported inventory coverage complete.
+  Version resource: file offset 949132, length 816, SHA-256
+  18aa3421b14090993f107b2f57e9f0d6752d2e9682015f6ad0e3d7eb7283bb1f
+The REA tool inventoried resource bytes; the version strings were separately decoded with pefile. Resource inspection does not observe runtime behavior.
+
+Data and plug-ins
+-----------------
+z_data/data.mfx: 4,588,716 bytes
+  SHA-256: 7450e44b1b5191c657fe76b65856956e218157855211f3a5e06b5ad4ebfbd657
+data2.mxx: 294,743,286 bytes, at disc root.
+The main data header contains assetstream, bootstream, and scenestream names. Its strings reference scene/media assets and bitmap-related modifiers. Exact script execution and complete activity inventory were not recovered in this bounded investigation.
+
+Native plug-ins, all PE32 x86:
+  BASIC.X32      249,344 bytes   base 0x11000000   Basic Kit 2.0
+  Bitmap.r32      90,624 bytes   base 0x10000000   bitmap-related exports
+  CURSORS.C32     88,576 bytes   base 0x15000000   mCursors 2.0
+  EXPRMNTL.R32    33,280 bytes   base 0x13000000   Experimental Kit 2.0
+  EXTRAS.R32     261,632 bytes   base 0x12000000   Extras Kit 2.0
+  NETWORK.R32   179,200 bytes   base 0x14000000   Network Kit 2.0
+
+BASIC exports include miniscriptmod, dragmod, collisionmod, timemsgmod, and saverestoremod, among others. Bitmap exports include hlBitmapVariable, hlCaptureBitmap, hlDisplayBitmap, hlPrintBitmap, hlSaveBitmap, hlScaleBitmap, and hlImportBitmap. The main data contains hlPrintBitmap at offset 0xbf4, hlBitmapVariable at 0xc48, and hlCaptureBitmap at 0xc9c. These are concrete dependency leads, not proof that every export is exercised.
+
+Windows/media boundary
+----------------------
+Main executable static import entries:
+  WINMM.dll       19
+  KERNEL32.dll   153
+  USER32.dll     161
+  GDI32.dll       91
+  comdlg32.dll     3
+  WINSPOOL.DRV     3
+  ADVAPI32.dll    13
+  SHELL32.dll      5
+  COMCTL32.dll     1
+  Total         449
+
+Examples: BitBlt, CreateDIBSection, palette/clipping/font functions, waveOutOpen/waveOutWrite and related audio functions, mciSendCommandA, mmio reads/seeks, LoadLibraryA, GetProcAddress, CreateThread, and GetMessageA.
+
+No DirectDraw or Direct3D DLL appears in this main static import table. Runtime strings include QTIM32.DLL, CMGR32.DLL, MSVFW32.DLL, and QuickTime-related names. The reachability of these paths and the codecs actually required are unknown. NETWORK.R32 also contains Winsock-related strings; that does not establish that Maisy requires live network access.
+
+A2 reference: observed source and artifacts
+------------------------------------------
+/home/rick/Documents/Rebuilds/A2 Racer 4/docs/recompiler.md
+/home/rick/Documents/Rebuilds/A2 Racer 4/tools/recomp/recompile.py
+/home/rick/Documents/Rebuilds/A2 Racer 4/tools/recomp/lift.py
+/home/rick/Documents/Rebuilds/A2 Racer 4/tools/recomp/wasmgen.py
+/home/rick/Documents/Rebuilds/A2 Racer 4/tools/recomp/build.py
+/home/rick/Documents/Rebuilds/A2 Racer 4/tools/recomp/replacements.py
+/home/rick/Documents/Rebuilds/A2 Racer 4/source/host/machine.js
+/home/rick/Documents/Rebuilds/A2 Racer 4/source/host/win32.js
+
+An existing public/game/spel.wasm artifact is present, 6,488,409 bytes. Its presence was confirmed; it was not launched or rebuilt.
+
+The source implements Python/Capstone static x86 instruction lifting with a custom Wasm encoder and Ghidra function inventory. It retains original addresses in linear memory and dispatches imported services to JavaScript. It does not compile recovered C.
+
+Concrete reuse blockers:
+- recompile.py lines 74-87 define a fixed layout and MEM_PAGES=4096 (256 MiB). Every Maisy plug-in's preferred base begins at or beyond the end of that memory.
+- Its code-address lookup is dense over a game-specific range. Extending that naively across separated plug-in bases would waste large amounts of memory.
+- recompile.py around lines 120-153 assumes a .text section and named imports. Main and plug-in code discovery/linking must be adapted.
+- build.py around lines 285-295 hard-codes A2 input and function-inventory paths.
+- win32.js lines 131-132 return zero for LoadLibraryA/GetProcAddress.
+- win32.js around lines 678-692 handles only a small GDI debug-text subset. It is not Maisy's bitmap/palette renderer.
+- A2's browser-loop, exceptions, x87 model, and replacement addresses are specific to A2. They cannot be transferred as universal runtime semantics.
+
+Candidate architecture
+----------------------
+Lift the original player and required plug-ins, preserving authored .mfx/.mxx content. Supply a proper module/export/callback bridge, measured memory/relocation scheme, browser-friendly scheduler, GDI presentation, audio/media support, and virtual filesystem/persistence.
+
+An alternative is an mTropolis-compatible content runtime compiled to Wasm. This preserves original data/scripts but is not recompilation of the original x86 player. Prefer the original-code approach first and base any fallback on concrete blockers.
+
+ScummVM corroboration
+---------------------
+Official source checked on 2026-11-11:
+https://github.com/scummvm/scummvm/blob/master/engines/mtropolis/detection_tables.h
+https://github.com/scummvm/scummvm/blob/master/engines/mtropolis/boot.cpp
+
+The detection table's Maisy entry (around lines 1629-1647 in the fetched raw source) identifies English Windows, with GAME_NOT_IMPLEMENTED and ADGF_UNSUPPORTED. The boot table points Maisy to bootGeneric. This is detection, not confirmed playable support.
+
+The executable and primary data match the table's first-5000-byte MD5 fingerprints and full file sizes:
+  Maisy.exe: ed776bfe63d17a7d57d9625c3efe5a0a, 1,085,952 bytes
+  data.mfx: 04f20a0a5e721ff0c4f84ee900c99530, 4,588,716 bytes
+These are prefix hashes, not whole-file MD5 hashes. The main executable's full SHA-256 is given above.
+
+Remaining unknowns
+------------------
+Actual startup sequence after autorun/install, required plug-in subset, dynamically resolved services, callbacks, instruction/exception coverage, native rendering dimensions, media codecs, copy/protection paths if any, precise activity behavior, and mobile performance remain unverified.
+
+No claim is made that the recompile already works or that 30 FPS has been achieved. The smallest useful next step, once implementation is requested, is an interactive original scene with input, sound, required plug-ins, and correct browser yielding.
+
+Evidence files
+--------------
+docs/evidence/iso-inventory.txt: complete 7-Zip filesystem listing.
+docs/evidence/native-modules.json: PE metadata, hashes, imports, exports, version strings, and selected strings for the nine inspected native modules.
+docs/evidence/maisy-pe-resources.json: complete REA resource-inventory Evidence.
+
+Selected files were extracted to /tmp/maisy-feasibility-ysbb5vnk for inspection. That temporary location is not a required build input and may be removed by the system. The ISO remains the source of truth. No original or A2 reference files were modified.

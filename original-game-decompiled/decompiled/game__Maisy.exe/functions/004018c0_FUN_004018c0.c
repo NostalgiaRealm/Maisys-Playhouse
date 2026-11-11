@@ -1,0 +1,22 @@
+
+/* ==== FUN_004018c0 @ 004018c0 ==== 
+ * signature: undefined __stdcall FUN_004018c0(void)
+ * body: 004018c0-00401961
+ */
+
+void FUN_004018c0(void)
+
+{
+  FUN_00489e10(s_CanGet_004d91d4,FUN_00401150);
+  FUN_00489e10(s_CanSet_004d91cc,FUN_00401170);
+  FUN_00489e10(s_GetAttribute_004d91bc,FUN_004012f0);
+  FUN_00489e10(&DAT_004d91b8,FUN_004012f0);
+  FUN_00489e10(s_SetAttribute_004d91a8,FUN_00401310);
+  FUN_00489e10(s_Object_004d91a0,FUN_00401330);
+  FUN_00489e10(s_Child_004d9198,FUN_00401410);
+  FUN_00489e10(s_HasChild_004d918c,FUN_00401500);
+  FUN_00489e10(s_SendMessage_004d9180,FUN_00401600);
+  return;
+}
+
+

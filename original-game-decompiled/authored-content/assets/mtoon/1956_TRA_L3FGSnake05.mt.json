@@ -1,0 +1,803 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 1956,
+ "name": "TRA_L3FGSnake05.mt",
+ "sourceStream": 68,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 285267823,
+ "frameDataPosition": 292562827,
+ "sizeOfFrameData": 4350,
+ "width": 69,
+ "height": 53,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 69,
+  "bottom": 53
+ },
+ "registrationPoint": {
+  "x": -123,
+  "y": -115
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": true,
+ "encodingFlags": "0xa0000000",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [
+  {
+   "startFrame": 2,
+   "endFrame": 26,
+   "unk14": 0,
+   "name": "ambient"
+  }
+ ],
+ "numFrames": 27,
+ "sheet": {
+  "columns": 16,
+  "rows": 2,
+  "cellWidth": 69,
+  "cellHeight": 53,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 0,
+   "fileOffset": 292562827,
+   "compressedSize": 1107,
+   "decompressedSize": 3816,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 3657,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 1,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 69,
+    "bottom": 53
+   },
+   "dataOffset": 1107,
+   "fileOffset": 292563934,
+   "compressedSize": 500,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 1273,
+   "decoded": true,
+   "sheetCell": [
+    69,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 2,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 1607,
+   "fileOffset": 292564434,
+   "compressedSize": 1107,
+   "decompressedSize": 3816,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 3657,
+   "decoded": true,
+   "sheetCell": [
+    138,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 3,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 2714,
+   "fileOffset": 292565541,
+   "compressedSize": 161,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 119,
+   "decoded": true,
+   "sheetCell": [
+    207,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 4,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 2875,
+   "fileOffset": 292565702,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    276,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 5,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 2897,
+   "fileOffset": 292565724,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    345,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 6,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 2919,
+   "fileOffset": 292565746,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    414,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 7,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 2941,
+   "fileOffset": 292565768,
+   "compressedSize": 160,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 123,
+   "decoded": true,
+   "sheetCell": [
+    483,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 8,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3101,
+   "fileOffset": 292565928,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    552,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 9,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3123,
+   "fileOffset": 292565950,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    621,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 10,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3145,
+   "fileOffset": 292565972,
+   "compressedSize": 161,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 119,
+   "decoded": true,
+   "sheetCell": [
+    690,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 11,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3306,
+   "fileOffset": 292566133,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    759,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 12,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3328,
+   "fileOffset": 292566155,
+   "compressedSize": 160,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 123,
+   "decoded": true,
+   "sheetCell": [
+    828,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 13,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3488,
+   "fileOffset": 292566315,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    897,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 14,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3510,
+   "fileOffset": 292566337,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    966,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 15,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3532,
+   "fileOffset": 292566359,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    1035,
+    0,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 16,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3554,
+   "fileOffset": 292566381,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 17,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3576,
+   "fileOffset": 292566403,
+   "compressedSize": 161,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 119,
+   "decoded": true,
+   "sheetCell": [
+    69,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 18,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3737,
+   "fileOffset": 292566564,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    138,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 19,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3759,
+   "fileOffset": 292566586,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    207,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 20,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3781,
+   "fileOffset": 292566608,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    276,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 21,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3803,
+   "fileOffset": 292566630,
+   "compressedSize": 160,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 123,
+   "decoded": true,
+   "sheetCell": [
+    345,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 22,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3963,
+   "fileOffset": 292566790,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    414,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 23,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 3985,
+   "fileOffset": 292566812,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    483,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 24,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 4007,
+   "fileOffset": 292566834,
+   "compressedSize": 161,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 119,
+   "decoded": true,
+   "sheetCell": [
+    552,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 25,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 4168,
+   "fileOffset": 292566995,
+   "compressedSize": 22,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    621,
+    53,
+    69,
+    53
+   ]
+  },
+  {
+   "index": 26,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 66,
+    "bottom": 49
+   },
+   "dataOffset": 4190,
+   "fileOffset": 292567017,
+   "compressedSize": 160,
+   "decompressedSize": 3816,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 69,
+   "rleHeight": 53,
+   "pixelsWritten": 123,
+   "decoded": true,
+   "sheetCell": [
+    690,
+    53,
+    69,
+    53
+   ]
+  }
+ ]
+}

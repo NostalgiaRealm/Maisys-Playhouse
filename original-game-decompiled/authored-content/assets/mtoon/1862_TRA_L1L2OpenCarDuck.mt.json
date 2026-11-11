@@ -1,0 +1,69 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 1862,
+ "name": "TRA_L1L2OpenCarDuck.mt",
+ "sourceStream": 66,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 268742501,
+ "frameDataPosition": 274214484,
+ "sizeOfFrameData": 463,
+ "width": 45,
+ "height": 39,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 45,
+  "bottom": 39
+ },
+ "registrationPoint": {
+  "x": -55,
+  "y": -110
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": false,
+ "encodingFlags": "0x0",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [],
+ "numFrames": 1,
+ "sheet": {
+  "columns": 1,
+  "rows": 1,
+  "cellWidth": 45,
+  "cellHeight": 39,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 45,
+    "bottom": 39
+   },
+   "dataOffset": 0,
+   "fileOffset": 274214484,
+   "compressedSize": 463,
+   "decompressedSize": 1872,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 48,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 45,
+   "rleHeight": 39,
+   "pixelsWritten": 1755,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    45,
+    39
+   ]
+  }
+ ]
+}

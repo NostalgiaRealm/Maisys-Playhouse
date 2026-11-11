@@ -1,0 +1,177 @@
+openjdk version "25.0.4.1" 2026-08-18
+OpenJDK Runtime Environment (Red_Hat-25.0.4.1.1-1) (build 25.0.4.1+1)
+OpenJDK 64-Bit Server VM (Red_Hat-25.0.4.1.1-1) (build 25.0.4.1+1, mixed mode)
+INFO  Using log config file: jar:file:/home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: /home/rick/.config/ghidra/ghidra_12.1.4_PUBLIC/application.log (LoggingInitialization)  
+INFO  Loading user preferences: /home/rick/.config/ghidra/ghidra_12.1.4_PUBLIC/preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (778 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  
+INFO  Headless startup complete (1592 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 59 extension points (20 false positives) (ClassSearcher)  
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)
+WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction
+WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release
+INFO  HEADLESS Script Paths:
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/SwiftDemangler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/VersionTracking/ghidra_scripts
+    /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/DATA/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/JVM/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/8051/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/Atmel/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/FileFormats/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/PyGhidra/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/BSim/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Debug/Debugger/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/PDB/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/PIC/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Decompiler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/BytePatterns/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Creating project: /home/rick/Documents/Rebuilds/maisy-ghidra-work/plugin__EXTRAS.R32/analysis (HeadlessAnalyzer)  
+INFO  Creating project: /home/rick/Documents/Rebuilds/maisy-ghidra-work/plugin__EXTRAS.R32/analysis (DefaultProject)  
+INFO  REPORT: Processing input files:  (HeadlessAnalyzer)  
+INFO       project: /home/rick/Documents/Rebuilds/maisy-ghidra-work/plugin__EXTRAS.R32/analysis (HeadlessAnalyzer)  
+INFO  IMPORTING: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/original/disc/z_data/mPlugins/EXTRAS.R32 (HeadlessAnalyzer)  
+INFO  Using Loader: Portable Executable (PE) (ProgramLoader)  
+INFO  Using Language/Compiler: x86:LE:32:default:windows (ProgramLoader)  
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib64] (ProgramLoader)  
+INFO  Additional info:
+Loading file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/original/disc/z_data/mPlugins/EXTRAS.R32?MD5=28b41eacf3e11b81979d1c1e3e204c0b...
+------------------------------------------------
+
+Searching 7 paths for library ADVAPI32.DLL...
+Library not found.
+------------------------------------------------
+
+Searching 7 paths for library COMDLG32.DLL...
+Library not found.
+------------------------------------------------
+
+Searching 7 paths for library GDI32.DLL...
+Library not found.
+------------------------------------------------
+
+Searching 7 paths for library KERNEL32.DLL...
+Library not found.
+------------------------------------------------
+
+Searching 7 paths for library USER32.DLL...
+Library not found.
+------------------------------------------------
+
+Searching 7 paths for library WINMM.DLL...
+Library not found.
+------------------------------------------------
+
+Linking the External Programs of 'EXTRAS.R32' to imported libraries...
+  [KERNEL32.DLL] -> not found in project
+  [ADVAPI32.DLL] -> not found in project
+  [USER32.DLL] -> not found in project
+  [GDI32.DLL] -> not found in project
+  [COMDLG32.DLL] -> not found in project
+  [WINMM.DLL] -> not found in project
+------------------------------------------------
+
+ (ProgramLoader)  
+INFO  IMPORTING: Loaded 0 additional files (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: ConfigureAnalysis.java 'deep'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra/ConfigureAnalysis.java (HeadlessAnalyzer)  
+INFO  ConfigureAnalysis.java> CONFIGURED analysis mode=deep (GhidraScript)  
+INFO  ANALYZING all memory and code: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/original/disc/z_data/mPlugins/EXTRAS.R32 (HeadlessAnalyzer)  
+WARN  Ignoring leading '_' chars on no-return name '___raise_securityfailure' specified in file: /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/data/PEFunctionsThatDoNotReturn (NoReturnFunctionAnalyzer)  
+WARN  Ignoring leading '_' chars on no-return name '___report_rangecheckfailure' specified in file: /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/data/PEFunctionsThatDoNotReturn (NoReturnFunctionAnalyzer)  
+INFO  Skipping PDB processing: failed to locate PDB file in configured locations (PdbUniversalAnalyzer)  
+INFO  Use a script to set the PDB file location. I.e.,
+    PdbAnalyzer.setPdbFileOption(currentProgram, new File("/path/to/pdb/file.pdb")); or
+    PdbUniversalAnalyzer.setPdbFileOption(currentProgram, new File("/path/to/pdb/file.pdb"));
+Or set the symbol server search configuration using:    PdbPlugin.saveSymbolServerServiceConfig(...);
+ This must be done using a pre-script (prior to analysis). (PdbUniversalAnalyzer)  
+INFO  Packed database cache: /var/tmp/rick-ghidra/packed-db-cache (PackedDatabaseCache)  
+INFO  Applied data type archive: windows_vs12_32 (ApplyDataArchiveAnalyzer)  
+INFO  Applied data type archive: windows_vs12_32 (ApplyDataArchiveAnalyzer)  
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.281 secs
+    Apply Data Archives                        0.532 secs
+    Call Convention ID                         1.083 secs
+    Call-Fixup Installer                       0.021 secs
+    Create Address Tables                      0.060 secs
+    Create Address Tables - One Time           0.030 secs
+    Create Function                            0.164 secs
+    Data Reference                             0.104 secs
+    Decompiler Parameter ID                    1.969 secs
+    Decompiler Switch Analysis                 4.066 secs
+    Demangler Microsoft                        0.025 secs
+    Disassemble                                0.717 secs
+    Disassemble Entry Points                   0.267 secs
+    Embedded Media                             0.006 secs
+    External Entry References                  0.000 secs
+    Function ID                                0.358 secs
+    Function Start Pre Search                  0.011 secs
+    Function Start Search                      0.108 secs
+    Function Start Search After Code           0.008 secs
+    Function Start Search After Data           0.050 secs
+    Function Start Search delayed - One Time   0.001 secs
+    Non-Returning Functions - Discovered       0.104 secs
+    Non-Returning Functions - Known            0.006 secs
+    PDB Universal                              0.009 secs
+    Reference                                  0.123 secs
+    Scalar Operand References                  0.309 secs
+    Shared Return Calls                        0.078 secs
+    Stack                                      1.160 secs
+    Subroutine References                      0.198 secs
+    Subroutine References - One Time           0.003 secs
+    WindowsResourceReference                   0.237 secs
+    X86 Function Callee Purge                  0.035 secs
+    x86 Constant Reference Analyzer            1.075 secs
+-----------------------------------------------------
+     Total Time   13 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)  
+INFO  REPORT: Analysis succeeded for file: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/original/disc/z_data/mPlugins/EXTRAS.R32 (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: RecoverGaps.java '/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/decompiled/plugin__EXTRAS.R32' '1'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra/RecoverGaps.java (HeadlessAnalyzer)  
+INFO  RecoverGaps.java> RECOVERGAPS prepass removed_padding=0 switch_parents_fixed=0 unreachable_regions=5 (GhidraScript)  
+INFO  RecoverGaps.java> RECOVERGAPS seeds=0 orphan=1046 prologue=29 fragment=71 (GhidraScript)  
+INFO  REPORT: Execute script: ExportModule.java '/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/decompiled/plugin__EXTRAS.R32' '1' '2'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra/ExportModule.java (HeadlessAnalyzer)  
+INFO  ExportModule.java> exported 1000/1858 (GhidraScript)  
+INFO  ExportModule.java> EXPORT COMPLETE functions=1858 decompiled=1858 assembly_only=0 out=/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/decompiled/plugin__EXTRAS.R32 (GhidraScript)  
+INFO  ANALYZING changes made by post scripts: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/original/disc/z_data/mPlugins/EXTRAS.R32 (HeadlessAnalyzer)  
+INFO  -----------------------------------------------------
+    Call Convention ID                         0.002 secs
+    Call-Fixup Installer                       0.007 secs
+    Decompiler Parameter ID                    1.154 secs
+    Decompiler Switch Analysis                 0.000 secs
+    Function Start Search                      0.014 secs
+    Function Start Search After Code           0.000 secs
+    Non-Returning Functions - Discovered       0.000 secs
+    Reference                                  0.000 secs
+    Scalar Operand References                  0.000 secs
+    Shared Return Calls                        0.016 secs
+    Stack                                      0.030 secs
+    Subroutine References                      0.000 secs
+    WindowsResourceReference                   0.217 secs
+    X86 Function Callee Purge                  0.011 secs
+    x86 Constant Reference Analyzer            0.000 secs
+-----------------------------------------------------
+     Total Time   1 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)  
+INFO  REPORT: Post-analysis succeeded for file: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/original/disc/z_data/mPlugins/EXTRAS.R32 (HeadlessAnalyzer)  
+INFO  /EXTRAS.R32: file created (rick) (LocalFileSystem)  
+INFO  REPORT: Save succeeded for: /EXTRAS.R32 (analysis:/EXTRAS.R32) (HeadlessAnalyzer)  
+INFO  REPORT: Import succeeded (HeadlessAnalyzer)  

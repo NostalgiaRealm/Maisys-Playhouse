@@ -1,0 +1,210 @@
+Create a faithful browser port of **Maisy's Playhouse (1999)**, preserving the original game content and behavior. Prefer **static x86-to-WebAssembly recompilation of the original runtime and required native plug-ins**, adapting the approach already used for A2 Racer 4.
+
+Work autonomously through investigation, implementation, focused testing, and corrections. **Do NOT pause between milestones or ask whether to proceed.** Continue beyond a plan, loader, or first visible screen.
+
+**Mandatory order: fully decompile the original game into the separate directory specified below before starting any recompilation or port implementation.** Once that phase is complete, continue directly into recompilation and porting without requesting milestone approval.
+
+Implement the full game, but limit gameplay verification and optimization to **one representative activity/scene**, including the short navigation needed to reach and leave it. Do not perform thorough verification checks, a full playthrough, or an exhaustive browser/device matrix. **Do not invoke a final critic, reviewer agent, or separate final review pass.**
+
+1. **Locations and preservation**
+
+   Project directory:
+
+   `/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/`
+
+   Original disc image:
+
+   `/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/Original/maisycd/MAISY_CD.iso`
+
+   A2 Racer 4 reference project:
+
+   `/home/rick/Documents/Rebuilds/A2 Racer 4/`
+
+   Read `docs/recompile-feasibility.txt` and its evidence files first. Inspect existing project contents before making changes. Preserve the ISO, everything under `Original/`, and the A2 reference project unchanged. Perform extraction, analysis, and development in separate project subfolders. Run original software only from working copies and an isolated test configuration.
+
+   Keep original files, analysis records, maintained source, generated WebAssembly, and browser assets clearly separated. Document exact preparation, build, and launch commands.
+
+2. **Mandatory first phase: full game decompilation**
+
+   Complete the decompilation in this dedicated directory:
+
+   `/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/`
+
+   Keep it separate from the maintained port source, browser host code, generated WebAssembly, and distribution files. Preserve the original ISO and `Original/` directory unchanged; work on extracted copies.
+
+   Inventory all code-bearing files in the game and its installation payloads. Decompile the entire `Maisy.exe` player and all six supplied native plug-ins, not merely selected functions or the components used by the one activity chosen for later testing. Include the autorun program, installer, and any additional executables, libraries, or embedded code discovered during extraction, identifying their roles separately from gameplay code.
+
+   For every native module, analyze and export the full discovered function set. Retain readable decompiled output, disassembly, function names/addresses, imports/exports, strings, resources, and reusable analysis projects or databases. Preserve each input binary and its SHA-256 identity alongside the analysis.
+
+   Also recover the authored scripts and other code-bearing content in `data.mfx`, `data2.mxx`, and any additional game data into readable representations where present. Document the objects, events, and references needed to connect this content to the native runtime. Preserve raw data and assets; image and audio assets are to be inventoried/extracted, not mislabeled as decompiled source.
+
+   Include a `README.md`, `LLM_GUIDE.md`, and coverage report inside `original-game-decompiled/`. Explain what each folder contains, what every executable and plug-in does, how native functions and authored content map back to the originals, and how to reproduce the analysis. Distinguish confirmed findings, inferences, and unresolved behavior. Label generated pseudocode honestly; do not claim recovery of exact authored source or a buildable original project without evidence.
+
+   Reconcile the module inventory with the exported analysis and record failed or unresolved functions and script formats explicitly. Resolve missing coverage before treating the phase as complete. If a genuine blocker prevents completing the decompilation, document it and continue independent decompilation work; do not bypass the prerequisite by beginning the port.
+
+   **Do not generate a recompiled Wasm module, build an interactive recompilation proof, implement the browser host, or start porting until this full decompilation phase is complete.** Reading reference source and preparing analysis tools are allowed during this phase.
+
+   The one-activity limit applies to later gameplay verification and performance testing. It does not limit decompilation coverage. Keep coverage checks focused on the inventory and analysis outputs; do not introduce an exhaustive runtime verification campaign or a final critic.
+
+3. **Established findings: use the actual Maisy architecture**
+
+   A preliminary static investigation on 2026-11-11 established:
+
+   - No file named `spel.dat` appears in this ISO's filesystem inventory. That filename belongs to the A2 reference.
+   - The main program is `z_data/Maisy.exe`, a 1,085,952-byte PE32 Intel x86 executable.
+   - Its version resource identifies the **mTropolis 32-Bit Windows Player, version 2.0**, from mFactory/Quark, with original filename `mTplay32.exe`.
+   - The main data files are `z_data/data.mfx` (4,588,716 bytes) and `data2.mxx` at the disc root (294,743,286 bytes).
+   - Six native x86 plug-ins are supplied under `z_data/mPlugins/`: `BASIC.X32`, `Bitmap.r32`, `CURSORS.C32`, `EXPRMNTL.R32`, `EXTRAS.R32`, and `NETWORK.R32`.
+   - The main executable has 449 static import entries, including extensive USER32/GDI32 use and WinMM audio. Its static import table does not contain DirectDraw or Direct3D. QuickTime/Video for Windows names also occur in its strings; their actual use by this title remains to be established.
+   - The supplied files match the English Windows release's executable/data size and prefix-hash fingerprints in ScummVM's mTropolis detection table. That table marked this title unimplemented/unsupported when checked; recognition is not working support.
+
+   These are static findings, not proof that a browser port or recompiled module runs. Preserve the supplied edition's language and media. Do not assume Maisy uses A2's Direct3D engine, vehicle systems, memory layout, or startup flow.
+
+   Maisy contains a multimedia runtime plus authored content. Identify the boundary between native player/plug-in code and the objects, scripts, scenes, and media in the data files. Keep authored content intact wherever possible.
+
+4. **Preferred approach: recompile the original x86 runtime to WebAssembly**
+
+   The A2 reference has an actual static binary recompiler: Python/Capstone decodes the original x86 program, uses a Ghidra function inventory, and emits WebAssembly directly through a custom encoder. It is not compilation of decompiler-generated C.
+
+   Start with these reference files:
+
+   - `docs/recompiler.md`
+   - `tools/recomp/recompile.py`
+   - `tools/recomp/lift.py`
+   - `tools/recomp/wasmgen.py`
+   - `tools/recomp/build.py`
+   - `tools/recomp/replacements.py`
+   - `source/host/machine.js`
+   - `source/host/win32.js`
+   - `source/host/vfs.js`
+   - `source/host/persist.js`
+
+   Reuse compatible instruction translation, control-flow handling, virtual memory, host-call dispatch, and file/persistence infrastructure. Create Maisy-specific configuration and source copies. Do not copy A2 addresses, owner patches, physics changes, timing hooks, or other game-specific replacements into Maisy.
+
+   Recompile `Maisy.exe` and the plug-ins whose native behavior is required. Preserve original data layouts, calling conventions, script behavior, and state transitions. Establish function boundaries and indirect-call targets from binary evidence; document unsupported instructions and reachable gaps explicitly.
+
+   Solve these known differences:
+
+   - **Multiple modules:** implement the required module loading, initialization, export lookup, cross-module calls, and callbacks. A2's `LoadLibraryA` and `GetProcAddress` implementations currently return zero and cannot load Maisy's plug-ins.
+   - **Address space:** Maisy's plug-ins have preferred bases from `0x10000000` through `0x15000000`, outside A2's fixed 256 MiB linear memory. Choose a justified memory layout or correct PE relocation strategy. Adapt code-address lookup for separated module ranges instead of copying A2's dense lookup layout across enormous address gaps.
+   - **Windows services:** implement the actually required window/message, input, resource, timer, file, registry, heap, and synchronization behavior. Determine callback and exception requirements from reachable code.
+   - **2D rendering:** build a faithful GDI/bitmap/palette presentation layer. A2's small GDI debug-text stubs are insufficient. Preserve clipping, drawing order, transparency, raster operations, fonts, and coordinate mapping where used.
+   - **Audio/media:** support the WinMM calls and media formats used by this title. Determine whether QuickTime, Video for Windows, MIDI, or other dynamically resolved services are required rather than assuming every runtime capability is exercised.
+   - **Browser scheduling:** identify Maisy's own message-loop and wait points so execution yields to the browser without changing game timing. Do not copy A2's race-loop replacements.
+   - **Runtime details:** handle required x87 behavior, calling conventions, stack probes, exceptions, and other compiler/runtime helpers. A2's specific workarounds are starting evidence, not general compatibility guarantees.
+
+   Do not silently replace required APIs with success-returning stubs, drop plug-in behavior, or skip unsupported reachable functions just to obtain a picture.
+
+5. **Establish viability after full decompilation, then continue**
+
+   Static inspection makes the recompile route a credible candidate, but it has not yet been demonstrated for Maisy.
+
+   After completing the mandatory full decompilation phase, build the smallest useful proof in the same activity that will be used for later verification:
+
+   - Load the original project data through the recompiled player.
+   - Initialize the required plug-ins.
+   - Display an original interactive scene.
+   - Process a real click or drag through the original logic.
+   - Play its associated sound where present.
+   - Yield and resume correctly in the browser.
+
+   A generated `.wasm` file, successful instantiation, blank window, or noninteractive screenshot is not this proof.
+
+   Investigate and correct concrete blockers, then continue directly into the complete port. Do not abandon recompilation merely because A2's host layer lacks an API.
+
+   If evidence establishes that the original-runtime route is impractical, document the exact blocker and the attempted remedy. Then use the most faithful viable alternative: for example, an mTropolis-compatible runtime compiled to WebAssembly that executes the original authored data/scripts, with the missing title-specific support implemented.
+
+   ScummVM's mTropolis source can help explain formats and runtime behavior. Its detection entry alone is not a working Maisy implementation. Respect applicable source licenses when reusing code. Clearly identify any interpreter-based fallback as such; do not call it recompilation of Maisy's original x86 binary.
+
+   Avoid manually recreating activities from screenshots when the original data and behavior can be retained.
+
+6. **Complete original functionality and content**
+
+   Inventory the actual rooms, activities, difficulty levels, interactions, characters, animations, narration, music, sound effects, menus, help, settings, and save/progression behavior. Implement all discovered game content even though verification is limited to one representative activity.
+
+   Preserve:
+
+   - Original startup, title/menu presentation, navigation, activity entry/exit, and transitions.
+   - Click targets, cursor states, dragging, drop acceptance, object placement, and interaction ordering.
+   - Original instructions, spoken feedback, timing, hints, repetition, success/failure responses, and difficulty behavior.
+   - Character animation, authored frame cadence, scene composition, colors, transparency, clipping, and layering.
+   - Audio content, triggers, looping, interruption rules, and synchronization with animation.
+   - Original data-driven logic, randomization, counters, activity state, and persistence where present.
+   - Drawing, printing, saving pictures, or similar features if confirmed. Adapt these to appropriate browser print/download/storage behavior rather than disabling them.
+
+   The data contains bitmap capture/print plug-in references. Investigate their role; an exported function or embedded name does not by itself prove an activity uses it.
+
+   Distinguish game content from the disc's installer, autorun wrapper, and promotional catalog. Preserve those files and document their purpose without treating unrelated promotional material as additional game activities.
+
+7. **Evidence and fidelity**
+
+   For consequential behavior, retain the original file/module and function address, data object/offset, or reproducible observation that supports it. Separate confirmed findings, inferences, and unresolved questions.
+
+   Use the original game and authored data as authority. Do not invent activity rules or timing to fill gaps. If original runtime observation is unavailable, record that limitation and continue work that does not depend on it.
+
+   Keep implemented and verified status separate. Do not claim complete gameplay parity from static analysis, successful compilation, or the one-activity smoke check.
+
+8. **Desktop, mobile, and controls**
+
+   Target desktop browsers on Linux, Windows, and macOS and mobile browsers on Android and iOS. Use WebAssembly for the selected runtime approach and a browser presentation layer appropriate to this 2D game. Do not introduce a 3D scene or require Three.js solely because A2 uses it.
+
+   Support mouse/pointer controls, the original keyboard actions, and touch interaction. Make tapping and dragging work with correct press/move/release ordering and hit coordinates, including input cancellation, focus loss, and release outside a target.
+
+   Where original hover behavior conveys necessary information, provide a usable touch equivalent while preserving the underlying activity rules. Avoid accidental page scrolling during gameplay gestures.
+
+   Provide controller access through sensible menu navigation or a virtual pointer where appropriate, without adding racing controls or a steering wheel to this game.
+
+   Support landscape and portrait layouts. Determine the original logical stage dimensions, preserve artwork proportions, and keep interactive areas visible. Scale or letterbox the authored scene as needed; move surrounding browser controls without distorting scene coordinates or inventing extra scenery.
+
+   Keep coordinate conversion correct across resizing, orientation changes, device pixel ratio, and render-scale changes. Handle safe areas and browser audio activation with a minimal, clear user interaction.
+
+9. **Resolution, settings, and timing**
+
+   Support Auto/native resolution, suitable explicit presets, and render scale from 25% to 200%. Define 100% as the selected base rendering resolution and scale both dimensions consistently. Account for device pixel ratio once, display effective rendering dimensions, and keep browser controls readable.
+
+   Preserve source artwork quality without pretending that a larger canvas creates new original detail. Preserve aspect ratio and intentional pixel/bitmap appearance.
+
+   Persist relevant audio, display, and control settings, along with original save data where applicable.
+
+   Decouple browser presentation from the original activity and animation timing. Faster rendering must not accelerate narration, animation, hints, timers, input handling, or activity logic. Preserve the original authored animation cadence even when presenting the scene at 30 FPS or higher.
+
+   Handle tab suspension and resumption without skipping activity steps, replaying large event backlogs, leaving stuck input, or breaking sound.
+
+10. **Mobile performance and bounded verification**
+
+   **Reach and sustain at least 30 FPS at an 800×360 CSS-pixel viewport, DPR 2, and 8× CPU throttle.**
+
+   Use Auto/native resolution and 100% render scale. The full viewport presentation canvas should be 1600×720 physical pixels; an aspect-correct authored scene may occupy a letterboxed portion of that canvas. Record both dimensions. Do not reduce the viewport, DPR, throttle, or render scale silently to meet the target.
+
+   Select **one representative activity/scene only**, preferably one that exercises meaningful animation, interaction, and sound. Use the same short, repeatable interaction sequence and measurement window for the baseline and subsequent optimization runs.
+
+   Measure after loading and warm-up, during active interaction. Record FPS/frame times and identify sustained slow sections. Do not present a menu, empty screen, idle scene, single peak, or average concealing sustained stalls as success. Preserve low-frame-rate source animation while measuring the presentation loop.
+
+   Profile actual bottlenecks, including native translation, GDI blits, palette conversion, callbacks, media decoding, allocations, and asset access. Avoid loading or duplicating the entire roughly 295 MB secondary data file in Wasm memory if bounded reads or caching can preserve behavior with lower memory use.
+
+   **Keep going until the optimization goal is reached without introducing visual anomalies or breaking the game.** Do not remove required content, skip script events, degrade original media, break drawing operations, or change game speed to improve the numbers.
+
+   After relevant changes, repeat only the same short measurement and brief visual/audio/input smoke check in that activity. Correct observed regressions. Do not expand into a full playthrough, exhaustive test suite, browser/device matrix, or separate final review.
+
+   Document that CPU throttling is an emulated profile, not proof of performance on every mobile device. If an external blocker genuinely prevents the target being measured or achieved, identify it explicitly rather than claiming success.
+
+11. **Documentation and completion**
+
+    Maintain:
+
+    - `PLAN.md`: progress, blockers, and next actions.
+    - `README.md`: reproducible extraction, preparation, build, and launch instructions.
+    - `docs/LLM_GUIDE.md`: folder map, original executable/plug-in roles, runtime architecture, source/generated boundaries, and continuation instructions.
+    - `docs/recompiler.md`: original binary identities, translation pipeline, module layout, host interfaces, overrides, unsupported paths, and any fallback decision.
+    - `docs/original-behavior.md`: evidence-linked behavior findings.
+    - `docs/feature-parity.md`: full content/feature inventory with separate implementation and verification status.
+    - `docs/validation.md`: the single activity, brief checks, performance profile, measurements, and known limitations.
+    - `docs/intentional-differences.md`: explicit browser/mobile adaptations.
+
+    Complete and retain the full decompilation in `original-game-decompiled/` before implementing the port. Complete the full discovered implementation and requested adaptations. Demonstrate the chosen runtime approach in the one selected activity and reach the mobile performance target without observed regressions there.
+
+    Report the actual runtime approach, what original code/data is preserved, remaining gaps, the activity tested, browser/host, measurement duration, rendering dimensions, throttle, and before/after performance. Leave other activities and environments marked unverified where they were not tested.
+
+    Do not mistake the restricted verification scope for permission to omit game content. Do not invoke a final critic or separate reviewer.
+
+Begin with the saved feasibility findings and complete the full game decompilation in `original-game-decompiled/`. Only then establish the interactive recompilation proof using the A2 reference and continue through implementation and focused optimization without pausing between milestones.

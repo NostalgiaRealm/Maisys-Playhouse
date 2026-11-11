@@ -1,0 +1,22 @@
+
+/* ==== KERNEL32.DLL::CreateFileA @ 12027b48 ==== 
+ * signature: HANDLE __stdcall CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+ * body: 12027b48-12027b4d
+ * thunk to: KERNEL32.DLL::CreateFileA
+ */
+
+HANDLE CreateFileA(LPCSTR lpFileName,DWORD dwDesiredAccess,DWORD dwShareMode,
+                  LPSECURITY_ATTRIBUTES lpSecurityAttributes,DWORD dwCreationDisposition,
+                  DWORD dwFlagsAndAttributes,HANDLE hTemplateFile)
+
+{
+  HANDLE pvVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x12027b48. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pvVar1 = CreateFileA(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,
+                       dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+  return pvVar1;
+}
+
+

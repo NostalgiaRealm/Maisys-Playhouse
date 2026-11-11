@@ -1,0 +1,30 @@
+node_modules/
+dist/
+tools/out/
+tools/recomp/out/
+__pycache__/
+*.pyc
+.claude/
+.env
+.env.*
+*.pem
+*.key
+
+# The disc image as delivered and its archive.org wrapper files. The extracted disc under
+# original-game-decompiled/original/disc/ is what the analysis and the port read.
+Original/
+
+# Third-party source read for file-format knowledge only (ScummVM, GPL); fetch it yourself.
+reference/
+
+# Over GitHub's 100 MB limit per file: large-files/ holds the pieces, tools/large-files.mjs restores it.
+original-game-decompiled/original/disc/data2.mxx
+
+# Kept out of the published package: the Wise installer and autorun programs with their unpacked
+# third-party payloads, and the publisher's promotional catalogue. Their analysis (decompiled/,
+# inventory/, extracted/wise-scripts/) is included.
+original-game-decompiled/original/disc/Install.exe
+original-game-decompiled/original/disc/Autorun.EXE
+original-game-decompiled/original/disc/AUTORUN.INF
+original-game-decompiled/original/disc/CATALOG/
+original-game-decompiled/extracted/*__wise/

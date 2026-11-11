@@ -1,0 +1,198 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 549,
+ "name": "DRA_L3S20Bowl.mt",
+ "sourceStream": 41,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 94948886,
+ "frameDataPosition": 118016244,
+ "sizeOfFrameData": 8164,
+ "width": 186,
+ "height": 114,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 186,
+  "bottom": 114
+ },
+ "registrationPoint": {
+  "x": -14,
+  "y": 0
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": false,
+ "encodingFlags": "0x20000000",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [
+  {
+   "startFrame": 0,
+   "endFrame": 0,
+   "unk14": 0,
+   "name": "up"
+  },
+  {
+   "startFrame": 1,
+   "endFrame": 4,
+   "unk14": 0,
+   "name": "highlight"
+  }
+ ],
+ "numFrames": 5,
+ "sheet": {
+  "columns": 5,
+  "rows": 1,
+  "cellWidth": 186,
+  "cellHeight": 114,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 20,
+    "top": 0,
+    "right": 173,
+    "bottom": 114
+   },
+   "dataOffset": 0,
+   "fileOffset": 118016244,
+   "compressedSize": 1486,
+   "decompressedSize": 17784,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 156,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 153,
+   "rleHeight": 114,
+   "pixelsWritten": 17442,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    186,
+    114
+   ]
+  },
+  {
+   "index": 1,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 172,
+    "bottom": 114
+   },
+   "dataOffset": 1486,
+   "fileOffset": 118017730,
+   "compressedSize": 1853,
+   "decompressedSize": 19608,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 172,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 172,
+   "rleHeight": 114,
+   "pixelsWritten": 19608,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    186,
+    0,
+    186,
+    114
+   ]
+  },
+  {
+   "index": 2,
+   "rect": {
+    "left": 20,
+    "top": 0,
+    "right": 175,
+    "bottom": 114
+   },
+   "dataOffset": 3339,
+   "fileOffset": 118019583,
+   "compressedSize": 1486,
+   "decompressedSize": 17784,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 156,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 155,
+   "rleHeight": 114,
+   "pixelsWritten": 17670,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    372,
+    0,
+    186,
+    114
+   ]
+  },
+  {
+   "index": 3,
+   "rect": {
+    "left": 17,
+    "top": 0,
+    "right": 186,
+    "bottom": 114
+   },
+   "dataOffset": 4825,
+   "fileOffset": 118021069,
+   "compressedSize": 1853,
+   "decompressedSize": 19608,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 172,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 169,
+   "rleHeight": 114,
+   "pixelsWritten": 19266,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    558,
+    0,
+    186,
+    114
+   ]
+  },
+  {
+   "index": 4,
+   "rect": {
+    "left": 18,
+    "top": 0,
+    "right": 173,
+    "bottom": 114
+   },
+   "dataOffset": 6678,
+   "fileOffset": 118022922,
+   "compressedSize": 1486,
+   "decompressedSize": 17784,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 156,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 155,
+   "rleHeight": 114,
+   "pixelsWritten": 17670,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    744,
+    0,
+    186,
+    114
+   ]
+  }
+ ]
+}

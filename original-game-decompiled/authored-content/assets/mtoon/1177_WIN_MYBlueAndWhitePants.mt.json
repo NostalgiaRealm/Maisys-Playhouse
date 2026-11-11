@@ -1,0 +1,98 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 1177,
+ "name": "WIN_MYBlueAndWhitePants.mt",
+ "sourceStream": 60,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 209815074,
+ "frameDataPosition": 225388198,
+ "sizeOfFrameData": 5742,
+ "width": 115,
+ "height": 75,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 115,
+  "bottom": 75
+ },
+ "registrationPoint": {
+  "x": -445,
+  "y": -384
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": false,
+ "encodingFlags": "0x0",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [],
+ "numFrames": 2,
+ "sheet": {
+  "columns": 2,
+  "rows": 1,
+  "cellWidth": 115,
+  "cellHeight": 75,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 4,
+    "top": 4,
+    "right": 111,
+    "bottom": 71
+   },
+   "dataOffset": 0,
+   "fileOffset": 225388198,
+   "compressedSize": 2699,
+   "decompressedSize": 7236,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 108,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 107,
+   "rleHeight": 67,
+   "pixelsWritten": 7169,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    115,
+    75
+   ]
+  },
+  {
+   "index": 1,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 115,
+    "bottom": 75
+   },
+   "dataOffset": 2699,
+   "fileOffset": 225390897,
+   "compressedSize": 3043,
+   "decompressedSize": 8700,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 116,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 115,
+   "rleHeight": 75,
+   "pixelsWritten": 8625,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    115,
+    0,
+    115,
+    75
+   ]
+  }
+ ]
+}

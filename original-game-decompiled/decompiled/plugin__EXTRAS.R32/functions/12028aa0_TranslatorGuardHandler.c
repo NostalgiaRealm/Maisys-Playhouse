@@ -1,0 +1,38 @@
+
+/* ==== TranslatorGuardHandler @ 12028aa0 ==== 
+ * signature: _EXCEPTION_DISPOSITION __cdecl TranslatorGuardHandler(EHExceptionRecord * param_1, TranslatorGuardRN * param_2, void * param_3, void * param_4)
+ * body: 12028aa0-12028b01
+ * note: Library Function - Single Match  enum _EXCEPTION_DISPOSITION __cdecl TranslatorGuardHandler(struct EHExceptionRecord *,struct TranslatorGuardRN *,void *,void *)  Library: Visual Studio 1998 Release
+ */
+
+/* Library Function - Single Match
+    enum _EXCEPTION_DISPOSITION __cdecl TranslatorGuardHandler(struct EHExceptionRecord *,struct
+   TranslatorGuardRN *,void *,void *)
+   
+   Library: Visual Studio 1998 Release */
+
+_EXCEPTION_DISPOSITION __cdecl
+TranslatorGuardHandler
+          (EHExceptionRecord *param_1,TranslatorGuardRN *param_2,void *param_3,void *param_4)
+
+{
+  _EXCEPTION_DISPOSITION _Var1;
+  
+  if (((byte)param_1[4] & 0x66) != 0) {
+    *(undefined4 *)(param_2 + 0x24) = 1;
+    return 1;
+  }
+  ___InternalCxxFrameHandler
+            ((pthreadlocinfo)param_1,*(EHRegistrationNode **)(param_2 + 0xc),param_3,(void *)0x0,
+             *(_s_FuncInfo **)(param_2 + 8),*(int *)(param_2 + 0x10),
+             *(EHRegistrationNode **)(param_2 + 0x14),1);
+  if (*(int *)(param_2 + 0x24) == 0) {
+    _UnwindNestedFrames((EHRegistrationNode *)param_2,param_1);
+  }
+                    /* WARNING: Could not recover jumptable at 0x12028aff. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  _Var1 = (**(code **)(param_2 + 0x18))();
+  return _Var1;
+}
+
+

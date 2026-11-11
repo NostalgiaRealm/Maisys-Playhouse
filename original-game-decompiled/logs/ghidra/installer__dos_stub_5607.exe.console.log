@@ -1,0 +1,127 @@
+openjdk version "25.0.4.1" 2026-08-18
+OpenJDK Runtime Environment (Red_Hat-25.0.4.1.1-1) (build 25.0.4.1+1)
+OpenJDK 64-Bit Server VM (Red_Hat-25.0.4.1.1-1) (build 25.0.4.1+1, mixed mode)
+INFO  Using log config file: jar:file:/home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: /home/rick/.config/ghidra/ghidra_12.1.4_PUBLIC/application.log (LoggingInitialization)  
+INFO  Loading user preferences: /home/rick/.config/ghidra/ghidra_12.1.4_PUBLIC/preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (779 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  
+INFO  Headless startup complete (1572 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 59 extension points (20 false positives) (ClassSearcher)  
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)
+WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction
+WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release
+INFO  HEADLESS Script Paths:
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/SwiftDemangler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/VersionTracking/ghidra_scripts
+    /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/DATA/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/JVM/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/8051/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/Atmel/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/FileFormats/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/PyGhidra/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/BSim/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Debug/Debugger/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/PDB/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/PIC/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Decompiler/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/BytePatterns/ghidra_scripts
+    /home/rick/Documents/dgVoodoo2_87_5_Decompiled/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Creating project: /home/rick/Documents/Rebuilds/maisy-ghidra-work/installer__dos_stub_5607.exe/analysis (HeadlessAnalyzer)  
+INFO  Creating project: /home/rick/Documents/Rebuilds/maisy-ghidra-work/installer__dos_stub_5607.exe/analysis (DefaultProject)  
+INFO  REPORT: Processing input files:  (HeadlessAnalyzer)  
+INFO       project: /home/rick/Documents/Rebuilds/maisy-ghidra-work/installer__dos_stub_5607.exe/analysis (HeadlessAnalyzer)  
+INFO  IMPORTING: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/extracted/Install.exe__wise/_unnamed/stream_005_0002039f.exe (HeadlessAnalyzer)  
+INFO  Using Loader: Old-style DOS Executable (MZ) (ProgramLoader)  
+INFO  Using Language/Compiler: x86:LE:16:Real Mode:default (ProgramLoader)  
+INFO  Using Library Search Path: [., /bin, /lib, /lib64, /lib/x86_64-linux-gnu, /lib/aarch64-linux-gnu, /usr/bin, /usr/lib, /usr/X11R6/bin, /usr/X11R6/lib, /usr/java/packages/lib, /usr/lib64] (ProgramLoader)  
+INFO  Additional info:
+Loading file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/extracted/Install.exe__wise/_unnamed/stream_005_0002039f.exe?MD5=3880bdc203719f808345ccfdf9a74066...
+------------------------------------------------
+
+ (ProgramLoader)  
+INFO  IMPORTING: Loaded 0 additional files (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: ConfigureAnalysis.java 'standard'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra/ConfigureAnalysis.java (HeadlessAnalyzer)  
+INFO  ConfigureAnalysis.java> CONFIGURED analysis mode=standard (GhidraScript)  
+INFO  ANALYZING all memory and code: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/extracted/Install.exe__wise/_unnamed/stream_005_0002039f.exe (HeadlessAnalyzer)  
+INFO  Packed database cache: /var/tmp/rick-ghidra/packed-db-cache (PackedDatabaseCache)  
+INFO  Applied data type archive: generic_clib (ApplyDataArchiveAnalyzer)  
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.226 secs
+    Apply Data Archives                        0.522 secs
+    Call Convention ID                         0.001 secs
+    Call-Fixup Installer                       0.001 secs
+    Create Function                            0.038 secs
+    Data Reference                             0.001 secs
+    Decompiler Switch Analysis                 0.676 secs
+    Demangler GNU                              0.004 secs
+    Disassemble Entry Points                   0.175 secs
+    Embedded Media                             0.007 secs
+    External Entry References                  0.000 secs
+    Function ID                                0.010 secs
+    Function Start Search                      0.008 secs
+    Non-Returning Functions - Discovered       0.005 secs
+    Reference                                  0.003 secs
+    Segmented X86 Calling Conventions          0.000 secs
+    Shared Return Calls                        0.015 secs
+    Stack                                      0.104 secs
+    Subroutine References                      0.007 secs
+    Subroutine References - One Time           0.000 secs
+    X86 Function Callee Purge                  0.011 secs
+    x86 Constant Reference Analyzer            0.094 secs
+-----------------------------------------------------
+     Total Time   1 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)  
+INFO  REPORT: Analysis succeeded for file: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/extracted/Install.exe__wise/_unnamed/stream_005_0002039f.exe (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: RecoverGaps.java '/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/decompiled/installer__dos_stub_5607.exe' '1'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra/RecoverGaps.java (HeadlessAnalyzer)  
+INFO  RecoverGaps.java> RECOVERGAPS prepass removed_padding=0 switch_parents_fixed=0 unreachable_regions=0 (GhidraScript)  
+ERROR REPORT SCRIPT ERROR:  (HeadlessAnalyzer) ghidra.program.model.address.AddressOutOfBoundsException: Offset must be between 0x0 and 0x10ffef, got 0x1a0a12e instead!
+	at ghidra.program.model.address.AbstractAddressSpace.makeValidOffset(AbstractAddressSpace.java:610)
+	at ghidra.program.model.address.GenericAddressSpace.makeValidOffset(GenericAddressSpace.java:21)
+	at ghidra.program.model.address.GenericAddress.<init>(GenericAddress.java:58)
+	at ghidra.program.model.address.SegmentedAddress.<init>(SegmentedAddress.java:62)
+	at ghidra.program.model.address.SegmentedAddressSpace.getAddress(SegmentedAddressSpace.java:275)
+	at ghidra.program.model.address.SegmentedAddressSpace.getAddress(SegmentedAddressSpace.java:35)
+	at ghidra.program.flatapi.FlatProgramAPI.toAddr(FlatProgramAPI.java:1959)
+	at RecoverGaps.fragmentPass(RecoverGaps.java:312)
+	at RecoverGaps.run(RecoverGaps.java:283)
+	at ghidra.app.script.GhidraScript.executeNormal(GhidraScript.java:460)
+	at ghidra.app.script.GhidraScript.doExecute(GhidraScript.java:314)
+	at ghidra.app.script.GhidraScript.execute(GhidraScript.java:290)
+	at ghidra.app.util.headless.HeadlessAnalyzer.runScript(HeadlessAnalyzer.java:585)
+	at ghidra.app.util.headless.HeadlessAnalyzer.runScriptsList(HeadlessAnalyzer.java:937)
+	at ghidra.app.util.headless.HeadlessAnalyzer.analyzeProgram(HeadlessAnalyzer.java:1093)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processFileWithImport(HeadlessAnalyzer.java:1591)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processWithLoader(HeadlessAnalyzer.java:1751)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processWithImport(HeadlessAnalyzer.java:1692)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processWithImport(HeadlessAnalyzer.java:1776)
+	at ghidra.app.util.headless.HeadlessAnalyzer.processLocal(HeadlessAnalyzer.java:452)
+	at ghidra.app.util.headless.AnalyzeHeadless.launch(AnalyzeHeadless.java:199)
+	at ghidra.GhidraLauncher.launch(GhidraLauncher.java:81)
+	at ghidra.Ghidra.main(Ghidra.java:54)
+ 
+INFO  REPORT: Execute script: ExportModule.java '/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/decompiled/installer__dos_stub_5607.exe' '1' '2'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/scripts/ghidra/ExportModule.java (HeadlessAnalyzer)  
+INFO  ExportModule.java> EXPORT COMPLETE functions=49 decompiled=49 assembly_only=0 out=/home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/decompiled/installer__dos_stub_5607.exe (GhidraScript)  
+INFO  ANALYZING changes made by post scripts: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/extracted/Install.exe__wise/_unnamed/stream_005_0002039f.exe (HeadlessAnalyzer)  
+INFO  REPORT: Post-analysis succeeded for file: file:///home/rick/Documents/Rebuilds/Maisy's Playhouse (1999)/original-game-decompiled/extracted/Install.exe__wise/_unnamed/stream_005_0002039f.exe (HeadlessAnalyzer)  
+INFO  /stream_005_0002039f.exe: file created (rick) (LocalFileSystem)  
+INFO  REPORT: Save succeeded for: /stream_005_0002039f.exe (analysis:/stream_005_0002039f.exe) (HeadlessAnalyzer)  
+INFO  REPORT: Import succeeded (HeadlessAnalyzer)  

@@ -1,0 +1,19 @@
+
+/* ==== FUN_10001260 @ 10001260 ==== 
+ * signature: undefined __cdecl FUN_10001260(undefined4 * param_1, undefined4 * param_2)
+ * body: 10001260-10001281
+ */
+
+void __cdecl FUN_10001260(undefined4 *param_1,undefined4 *param_2)
+
+{
+  int iVar1;
+  
+  iVar1 = FUN_100011f0((undefined2 *)param_1);
+  if (iVar1 == 0) {
+    FUN_10001220(param_1,param_2);
+  }
+  return;
+}
+
+

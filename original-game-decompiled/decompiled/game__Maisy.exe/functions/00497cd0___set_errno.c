@@ -1,0 +1,33 @@
+
+/* ==== __set_errno @ 00497cd0 ==== 
+ * signature: errno_t __cdecl __set_errno(int _Value)
+ * body: 00497cd0-00497cfb
+ * note: Library Function - Single Match  __set_errno  Library: Visual Studio 1998 Release
+ */
+
+/* Library Function - Single Match
+    __set_errno
+   
+   Library: Visual Studio 1998 Release */
+
+errno_t __cdecl __set_errno(int _Value)
+
+{
+  int *piVar1;
+  
+  if (_Value == 1) {
+    piVar1 = FUN_0048f9d0();
+    *piVar1 = 0x21;
+    return (errno_t)piVar1;
+  }
+  if (1 < _Value) {
+    if (3 < _Value) {
+      return _Value;
+    }
+    _Value = (int)FUN_0048f9d0();
+    *(int *)_Value = 0x22;
+  }
+  return _Value;
+}
+
+

@@ -1,0 +1,15 @@
+{
+  "name": "maisys-playhouse-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser port of Maisy's Playhouse (1999): the original mTropolis player and plug-ins recompiled from x86 to WebAssembly.",
+  "scripts": {
+    "recompile": "$HOME/.local/share/reverse-engineering/python-analysis/bin/python tools/recomp/build.py --out public/game",
+    "headless": "node tools/run-headless.mjs",
+    "serve": "node tools/serve.mjs",
+    "restore-data": "node tools/large-files.mjs restore",
+    "build": "node tools/build.mjs --link",
+    "postinstall": "node tools/large-files.mjs restore"
+  }
+}

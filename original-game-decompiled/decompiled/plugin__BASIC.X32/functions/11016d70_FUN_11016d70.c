@@ -1,0 +1,15 @@
+
+/* ==== FUN_11016d70 @ 11016d70 ==== 
+ * signature: undefined __cdecl FUN_11016d70(int param_1, int param_2)
+ * body: 11016d70-11016d84
+ */
+
+void __cdecl FUN_11016d70(int param_1,int param_2)
+
+{
+  *(undefined4 *)(param_2 + 0x10) = *(undefined4 *)(param_1 + 0xc);
+  *(undefined4 *)(param_2 + 0x14) = *(undefined4 *)(param_1 + 0x10);
+  return;
+}
+
+

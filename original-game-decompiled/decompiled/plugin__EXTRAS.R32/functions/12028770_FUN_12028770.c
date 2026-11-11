@@ -1,0 +1,19 @@
+
+/* ==== FUN_12028770 @ 12028770 ==== 
+ * signature: undefined __stdcall FUN_12028770(void)
+ * body: 12028770-120287a7
+ */
+
+void FUN_12028770(void)
+
+{
+  PTR_FUN_12037e6c = FUN_120290e0;
+  PTR_FUN_12037e70 = FUN_12029160;
+  PTR_FUN_12037e74 = FUN_12029070;
+  PTR_FUN_12037e78 = FUN_12029140;
+  PTR_FUN_12037e68 = FUN_12029500;
+  PTR_FUN_12037e7c = FUN_12029500;
+  return;
+}
+
+

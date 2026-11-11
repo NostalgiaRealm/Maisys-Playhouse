@@ -1,0 +1,88 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 2050,
+ "name": "PLA_Bed1PandaOverlay.mt",
+ "sourceStream": 21,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 15549990,
+ "frameDataPosition": 17477925,
+ "sizeOfFrameData": 2232,
+ "width": 70,
+ "height": 117,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 70,
+  "bottom": 117
+ },
+ "registrationPoint": {
+  "x": -393,
+  "y": -265
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": false,
+ "encodingFlags": "0x20000000",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [
+  {
+   "startFrame": 4294967295,
+   "endFrame": 4294967295,
+   "unk14": 0,
+   "name": "onbed"
+  },
+  {
+   "startFrame": 4294967295,
+   "endFrame": 4294967295,
+   "unk14": 0,
+   "name": "gone"
+  },
+  {
+   "startFrame": 0,
+   "endFrame": 0,
+   "unk14": 0,
+   "name": "inbed"
+  }
+ ],
+ "numFrames": 1,
+ "sheet": {
+  "columns": 1,
+  "rows": 1,
+  "cellWidth": 70,
+  "cellHeight": 117,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 70,
+    "bottom": 117
+   },
+   "dataOffset": 0,
+   "fileOffset": 17477925,
+   "compressedSize": 2232,
+   "decompressedSize": 8424,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 72,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 70,
+   "rleHeight": 117,
+   "pixelsWritten": 8190,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    70,
+    117
+   ]
+  }
+ ]
+}

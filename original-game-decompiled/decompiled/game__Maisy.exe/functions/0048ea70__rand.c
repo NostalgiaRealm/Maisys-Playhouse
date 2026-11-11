@@ -1,0 +1,25 @@
+
+/* ==== _rand @ 0048ea70 ==== 
+ * signature: int __cdecl _rand(void)
+ * body: 0048ea70-0048ea9e
+ * note: Library Function - Single Match  _rand  Library: Visual Studio 1998 Release
+ */
+
+/* Library Function - Single Match
+    _rand
+   
+   Library: Visual Studio 1998 Release */
+
+int __cdecl _rand(void)
+
+{
+  uint uVar1;
+  _ptiddata p_Var2;
+  
+  p_Var2 = __getptd();
+  uVar1 = p_Var2->_holdrand * 0x343fd + 0x269ec3;
+  p_Var2->_holdrand = uVar1;
+  return (uVar1 & 0x7fff0000) >> 0x10;
+}
+
+

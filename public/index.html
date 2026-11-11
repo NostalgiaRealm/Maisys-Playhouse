@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#101418">
+<title>Maisy's Playhouse (1999)</title>
+<link rel="stylesheet" href="src/web/style.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="screen" width="640" height="480" tabindex="0" aria-label="Maisy's Playhouse"></canvas>
+    <div id="vcursor" hidden></div>
+    <div id="start" class="overlay">
+      <div class="card">
+        <h1>Maisy's Playhouse</h1>
+        <p class="sub">1999 CD-ROM, original program running in your browser</p>
+        <button id="play" class="primary" disabled>Loading…</button>
+        <p id="status" class="status"></p>
+      </div>
+    </div>
+    <div id="dialog" class="overlay" hidden>
+      <div class="card">
+        <h2 id="dlg-title"></h2>
+        <p id="dlg-text"></p>
+        <div id="dlg-buttons" class="row"></div>
+      </div>
+    </div>
+    <div id="paused" class="overlay" hidden><div class="card"><h2>Paused</h2><button id="resume" class="primary">Continue</button></div></div>
+  </div>
+  <div id="bar" role="toolbar" aria-label="Controls">
+    <button id="b-hover" title="Touch: point without clicking (hover)" aria-pressed="false">☝</button>
+    <button id="b-mute" title="Sound on/off" aria-pressed="false">🔊</button>
+    <button id="b-full" title="Full screen">⛶</button>
+    <button id="b-settings" title="Settings">⚙</button>
+    <span id="res" title="Effective rendering size"></span>
+  </div>
+  <div id="settings" class="panel" hidden>
+    <h2>Settings</h2>
+    <label>Resolution
+      <select id="s-res">
+        <option value="auto">Auto (fit the window)</option>
+        <option value="640">640 × 480 (original)</option>
+        <option value="1280">1280 × 960</option>
+        <option value="1920">1920 × 1440</option>
+      </select>
+    </label>
+    <label>Render scale <output id="o-scale"></output>
+      <input id="s-scale" type="range" min="25" max="200" step="5" value="100">
+    </label>
+    <label>Scaling
+      <select id="s-smooth">
+        <option value="pixel">Sharp pixels</option>
+        <option value="smooth">Smooth</option>
+      </select>
+    </label>
+    <label>Volume <output id="o-vol"></output>
+      <input id="s-vol" type="range" min="0" max="100" step="5" value="100">
+    </label>
+    <label class="check"><input id="s-hover" type="checkbox"> Touch points without clicking (hover mode)</label>
+    <label>Controller pointer speed <output id="o-pad"></output>
+      <input id="s-pad" type="range" min="20" max="200" step="10" value="100">
+    </label>
+    <p class="hint" id="s-info"></p>
+    <div class="row">
+      <button id="s-help">Game help</button>
+      <button id="s-reset">Erase saved game</button>
+      <button id="s-close" class="primary">Close</button>
+    </div>
+  </div>
+  <div id="help" class="panel" hidden>
+    <h2>Maisy's Playhouse: help</h2>
+    <pre id="help-text"></pre>
+    <div class="row"><button id="help-close" class="primary">Close</button></div>
+  </div>
+</div>
+<script type="module" src="src/web/main.js"></script>
+</body>
+</html>

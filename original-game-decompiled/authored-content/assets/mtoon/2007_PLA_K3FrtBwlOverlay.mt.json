@@ -1,0 +1,69 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 2007,
+ "name": "PLA_K3FrtBwlOverlay.mt",
+ "sourceStream": 27,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 31125941,
+ "frameDataPosition": 34073408,
+ "sizeOfFrameData": 1485,
+ "width": 123,
+ "height": 63,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 123,
+  "bottom": 63
+ },
+ "registrationPoint": {
+  "x": -318,
+  "y": -321
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": false,
+ "encodingFlags": "0x0",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [],
+ "numFrames": 1,
+ "sheet": {
+  "columns": 1,
+  "rows": 1,
+  "cellWidth": 123,
+  "cellHeight": 63,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 123,
+    "bottom": 63
+   },
+   "dataOffset": 0,
+   "fileOffset": 34073408,
+   "compressedSize": 1485,
+   "decompressedSize": 7812,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 124,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 123,
+   "rleHeight": 63,
+   "pixelsWritten": 7749,
+   "pixelsNotWritten": 0,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    123,
+    63
+   ]
+  }
+ ]
+}

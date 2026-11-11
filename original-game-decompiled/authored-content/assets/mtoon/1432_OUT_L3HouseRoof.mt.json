@@ -1,0 +1,96 @@
+{
+ "_generated": "by scripts/formats/mtropolis_assets.py from the original data file; this is an extracted ASSET, not source",
+ "assetID": 1432,
+ "name": "OUT_L3HouseRoof.mt",
+ "sourceStream": 65,
+ "sourceSegmentFile": "data2.mxx",
+ "assetObjectOffset": 265285799,
+ "frameDataPosition": 266372235,
+ "sizeOfFrameData": 14456,
+ "width": 378,
+ "height": 112,
+ "rect": {
+  "left": 0,
+  "top": 0,
+  "right": 378,
+  "bottom": 112
+ },
+ "registrationPoint": {
+  "x": -187,
+  "y": -124
+ },
+ "bitsPerPixel": 8,
+ "codecID": "0x2e524c45",
+ "codec": "mToon RLE (\".RLE\"), 8-bit, rows bottom-up",
+ "temporalCompression": true,
+ "encodingFlags": "0x80000000",
+ "version": 4,
+ "palette": "embedded 256-entry BGRx table in the asset header (codecData); written into the PNG palette",
+ "frameRanges": [],
+ "numFrames": 2,
+ "sheet": {
+  "columns": 2,
+  "rows": 1,
+  "cellWidth": 378,
+  "cellHeight": 112,
+  "note": "cell i is at column i %% columns, row i // columns. Pixels are palette indices. For delta-coded (temporal) mToons each cell shows the accumulated picture. For non-temporal frames, pixels the RLE stream skips are left as index 0 (see pixelsNotWritten); transparency at runtime depends on the element ink mode."
+ },
+ "frames": [
+  {
+   "index": 0,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 378,
+    "bottom": 112
+   },
+   "dataOffset": 0,
+   "fileOffset": 266372235,
+   "compressedSize": 7570,
+   "decompressedSize": 42560,
+   "keyframeFlag": 1,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 380,
+   "rlePrefix": "RLE (keyframe)",
+   "rleVersion": "0x81000001",
+   "rleWidth": 378,
+   "rleHeight": 112,
+   "pixelsWritten": 42336,
+   "decoded": true,
+   "sheetCell": [
+    0,
+    0,
+    378,
+    112
+   ]
+  },
+  {
+   "index": 1,
+   "rect": {
+    "left": 0,
+    "top": 0,
+    "right": 378,
+    "bottom": 112
+   },
+   "dataOffset": 7570,
+   "fileOffset": 266379805,
+   "compressedSize": 6886,
+   "decompressedSize": 42560,
+   "keyframeFlag": 0,
+   "bitsPerPixel": 8,
+   "decompressedBytesPerRow": 380,
+   "rlePrefix": "delta",
+   "rleVersion": "0x81000001",
+   "rleWidth": 378,
+   "rleHeight": 112,
+   "pixelsWritten": 16386,
+   "decoded": true,
+   "sheetCell": [
+    378,
+    0,
+    378,
+    112
+   ]
+  }
+ ]
+}

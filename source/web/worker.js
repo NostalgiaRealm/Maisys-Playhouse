@@ -156,6 +156,7 @@ async function start(init) {
           else if (type === 5) out.push({ type: 'keyup', vk: ring[o + 1], scan: ring[o + 3] });
           else if (type === 6) out.push({ type: 'cancel' });
           else if (type === 7) out.push({ type: 'close' });
+          else if (type === 8) out.push({ type: 'command', hwnd: ring[o + 1], id: ring[o + 2] });
           r = (r + 1) | 0;
         }
         Atomics.store(ctrl, CTRL.IN_READ, r);
@@ -186,6 +187,8 @@ async function start(init) {
     showHelp: (file) => post({ t: 'help', file }),
     canPrint: () => true,
     printPage: (s, name, n) => { const rgba = s.data.slice(); post({ t: 'print', w: s.w, h: s.h, rgba, name, n }, [rgba.buffer]); },
+    showDialog: (spec) => post({ t: 'dialog', spec }),
+    hideDialog: (hwnd) => post({ t: 'dialog', close: hwnd }),
     cursorChanged: (c, visible) => {
       if (!c || !visible) post({ t: 'cursor', none: !visible });
       else if (c.css) post({ t: 'cursor', css: c.css });

@@ -338,6 +338,7 @@ export function installUser32(m, host) {
     for (const o of [...wins.values()]) if (o.owner === w && !o.destroyed) destroy(o, notify);
     if (notify) send(w.hwnd, WM.NCDESTROY);
     w.destroyed = true;
+    if (w.isDialog && w.visible) host.hideDialog(w.hwnd);
     if (w.parent) { const k = w.parent.children.indexOf(w); if (k >= 0) w.parent.children.splice(k, 1); }
     wins.delete(w.hwnd);
     if (activeWin === w.hwnd) activeWin = 0;
@@ -384,6 +385,8 @@ export function installUser32(m, host) {
     send(w.hwnd, WM.SHOWWINDOW, show ? 1 : 0, 0);
     w.visible = show;
     if (show) w.style |= WS_VISIBLE; else w.style &= ~WS_VISIBLE;
+    if (w.isDialog) { if (show) host.showDialog(dialogSpec(w)); else host.hideDialog(w.hwnd); }
+    if (w.parent && w.parent.isDialog) host.dialogChanged(w.parent);
     if (show) {
       invalidateTree(w);
       if (w.parent === desktop && cmd !== 4 && cmd !== 8 && cmd !== 7) activate(w);
@@ -599,7 +602,7 @@ export function installUser32(m, host) {
       l = Math.max(l, px); t = Math.max(t, py); r = Math.min(r, px + cw(p)); b = Math.min(b, py + ch(p));
     }
     l = Math.max(l, 0); t = Math.max(t, 0); r = Math.min(r, SW); b = Math.min(b, SH);
-    const vis = isVisible(w);
+    const vis = isVisible(w) && !w.noDraw;
     const hdc = host.newDC(host.screenSurface, { hwnd: w.hwnd, ox, oy, visX: l, visY: t, visW: vis ? Math.max(0, r - l) : 0, visH: vis ? Math.max(0, b - t) : 0 });
     const dc = host.gdi.get(hdc);
     // WS_CLIPCHILDREN: children are excluded from the parent's drawing area
@@ -662,6 +665,7 @@ export function installUser32(m, host) {
   m.api(U + 'ValidateRect', 2, (h, p) => { const w = W(h); if (w) w.update = null; return 1; });
   const paintNow = (w) => {
     if (w.destroyed || !w.update || !isVisible(w)) return;
+    if (w.noDraw) { w.update = null; return; }
     send(w.hwnd, WM.PAINT, 0, 0);
     if (!w.destroyed && w.update) w.update = null;      // a handler that does not call BeginPaint must not loop
   };
@@ -729,10 +733,11 @@ export function installUser32(m, host) {
   function defWindowProc(hwnd, msg, wp, lp) {
     const w = W(hwnd);
     if (!w) return 0;
+    if (host.onDefWindowProc) host.onDefWindowProc(hwnd, msg, wp, lp);     // test hook (tools/run-headless.mjs --throw-test)
     switch (msg) {
       case WM.NCCREATE: return 1;
       case WM.CREATE: return 0;
-      case WM.SETTEXT: w.text = lp ? m.cstr(lp) : ''; return 1;
+      case WM.SETTEXT: w.text = lp ? m.cstr(lp) : ''; if (w.isDialog) host.dialogChanged(w); else if (w.parent && w.parent.isDialog) host.dialogChanged(w.parent); return 1;
       case WM.GETTEXT: return wp ? m.writeCStr(lp, w.text, wp) : 0;
       case WM.GETTEXTLENGTH: return w.text.length;
       case WM.CLOSE: destroy(w); return 0;
@@ -854,6 +859,11 @@ export function installUser32(m, host) {
         for (let vk = 8; vk < 256; vk++) {
           if (keyState[vk] & 0x80) { keyState[vk] &= 1; const hwnd = focusWin || activeWin; if (hwnd) queue.push({ hwnd, msg: WM.KEYUP, wp: vk, lp: 0xC0000001 >>> 0, time, x: cursorX, y: cursorY }); }
         }
+      } else if (e.type === 'command') {
+        // a button of a dialog shown by the page: what the button control would have sent
+        const dw = W(e.hwnd);
+        const c = dw && dw.children.find((x) => (x.id & 0xFFFF) === e.id);
+        if (dw) queue.push({ hwnd: e.hwnd, msg: WM.COMMAND, wp: e.id & 0xFFFF, lp: c ? c.hwnd : 0, time });
       } else if (e.type === 'close') {
         const top = desktop.children.find((c) => c.visible);
         if (top) queue.push({ hwnd: top.hwnd, msg: WM.CLOSE, wp: 0, lp: 0, time });
@@ -863,7 +873,7 @@ export function installUser32(m, host) {
   const findPaint = () => {
     const walk = (w) => {
       if (w !== desktop && (!w.visible || w.destroyed)) return null;
-      if (w !== desktop && w.update) return w;
+      if (w !== desktop && w.update) { if (w.noDraw) w.update = null; else return w; }
       for (const c of w.children) { const r = walk(c); if (r) return r; }
       return null;
     };
@@ -1118,9 +1128,98 @@ export function installUser32(m, host) {
 
   // --- dialogs and message boxes -----------------------------------------------------------
   m.api(U + 'MessageBoxA', 4, (hwnd, pText, pCap, type) => host.messageBox(pText ? m.cstr(pText) : '', pCap ? m.cstr(pCap) : 'Error', type));
-  m.api(U + 'CreateDialogIndirectParamA', 5, () => { log('CreateDialogIndirectParam: dialogs are not available in this build'); return 0; });
-  m.api(U + 'EndDialog', 2, () => 1);
-  for (const [name, n] of [['CheckDlgButton', 3], ['CheckRadioButton', 4], ['IsDlgButtonChecked', 2], ['GetDlgItemInt', 4], ['GetDlgItemTextA', 4], ['SetDlgItemInt', 4], ['SetDlgItemTextA', 3]]) m.api(U + name, n, () => 0);
+  // Dialogs. The dialog and its controls are real windows, so the player's (MFC) dialog code runs
+  // unchanged: WM_INITDIALOG, Get/SetDlgItemText, WM_COMMAND, EndDialog. They are not drawn into
+  // the 640x480 screen; the page shows the dialog's texts and buttons as an overlay and a button
+  // press comes back as the WM_COMMAND the control would have sent.
+  const DLG_CLASSES = { 0x80: 'BUTTON', 0x81: 'EDIT', 0x82: 'STATIC', 0x83: 'LISTBOX', 0x84: 'SCROLLBAR', 0x85: 'COMBOBOX' };
+  const dlgProc = (hwnd, msg, wp, lp) => {
+    const w = W(hwnd);
+    if (!w) return 0;
+    const proc = w.extra[4] | (w.extra[5] << 8) | (w.extra[6] << 16) | (w.extra[7] << 24);
+    if (proc >>> 0) {
+      w.extra[0] = w.extra[1] = w.extra[2] = w.extra[3] = 0;          // DWL_MSGRESULT
+      const handled = callProc(proc >>> 0, hwnd, msg, wp, lp);
+      if (!W(hwnd)) return 0;
+      if (handled) return msg === 0x110 || (msg >= 0x132 && msg <= 0x138) || msg === 0x2B || msg === 0x2E || msg === 0x2F ? handled : (w.extra[0] | (w.extra[1] << 8) | (w.extra[2] << 16) | (w.extra[3] << 24)) >>> 0;
+    }
+    if (msg === WM.CLOSE) { queue.push({ hwnd, msg: WM.COMMAND, wp: 2, lp: 0, posted: true }); return 0; }   // IDCANCEL
+    if (msg === WM.ERASEBKGND || msg === WM.PAINT) { w.update = null; return 1; }
+    return defWindowProc(hwnd, msg, wp, lp);
+  };
+  const dlgProcThunk = m.makeThunk('DefDlgProc(thunk)', 16, (esp) => dlgProc(u32[(esp + 4) >> 2], u32[(esp + 8) >> 2], u32[(esp + 12) >> 2], u32[(esp + 16) >> 2]));
+  classes.get('#32770').proc = dlgProcThunk;
+  const dialogSpec = (w) => {
+    const texts = [], buttons = [];
+    for (const c of w.children.slice().reverse()) {
+      const cn = c.cls.name.toUpperCase();
+      if (!c.visible) continue;
+      if (cn === 'STATIC' && c.text.trim()) texts.push(c.text.replace(/&/g, ''));
+      else if (cn === 'BUTTON' && (c.style & 0xF) <= 1) buttons.push({ id: c.id & 0xFFFF, label: c.text.replace(/&/g, ''), isDefault: (c.style & 0xF) === 1, disabled: !c.enabled });
+    }
+    return { hwnd: w.hwnd, title: w.text, texts, buttons };
+  };
+  host.dialogChanged = (w) => { if (w.isDialog && w.visible && !w.destroyed) host.showDialog(dialogSpec(w)); };
+  m.api(U + 'CreateDialogIndirectParamA', 5, (hInst, pTmpl, hParent, proc, param) => {
+    // DLGTEMPLATE (the classic form; DLGTEMPLATEEX starts with dlgVer 1, signature 0xFFFF)
+    let p = pTmpl;
+    if (u16[p >> 1] === 1 && u16[(p + 2) >> 1] === 0xFFFF) { log('CreateDialogIndirectParam: extended dialog templates are not supported'); return 0; }
+    const style = u32[p >> 2];
+    const count = u16[(p + 8) >> 1];
+    p += 18;
+    const sz = () => { if (u16[p >> 1] === 0xFFFF) { const v = u16[(p + 2) >> 1]; p += 4; return v; } let t = ''; for (;;) { const c = u16[p >> 1]; p += 2; if (!c) break; t += String.fromCharCode(c < 256 ? c : 63); } return t; };
+    sz();                                  // menu
+    sz();                                  // class
+    const title = sz();
+    if (style & 0x40) { p += 2; sz(); }     // DS_SETFONT: point size, face
+    const tmp2 = host.heap.alloc(512);
+    m.writeCStr(tmp2, title, 255);
+    m.writeCStr(tmp2 + 256, '#32770');
+    const hwnd = createWindow(0, tmp2 + 256, tmp2, ((style & ~WS_VISIBLE & ~WS_CHILD) | WS_POPUP) >>> 0, 170, 140, 300, 200, hParent, 0, hInst, 0);
+    if (!hwnd) { host.heap.release(tmp2); return 0; }
+    const w = W(hwnd);
+    w.isDialog = true;
+    w.noDraw = true;
+    w.extra[4] = proc; w.extra[5] = proc >> 8; w.extra[6] = proc >> 16; w.extra[7] = proc >>> 24;
+    let first = 0;
+    for (let k = 0; k < count; k++) {
+      p = (p + 3) & ~3;
+      const cStyle = u32[p >> 2], cEx = u32[(p + 4) >> 2];
+      const id = u16[(p + 16) >> 1];
+      p += 18;
+      const cls = sz();
+      const text = sz();
+      const extraLen = u16[p >> 1];
+      p += 2 + extraLen;
+      const cname = typeof cls === 'number' ? DLG_CLASSES[cls] || 'STATIC' : cls;
+      m.writeCStr(tmp2, typeof text === 'number' ? '' : text, 255);
+      m.writeCStr(tmp2 + 256, cname, 255);
+      const ch = createWindow(cEx, tmp2 + 256, tmp2, (cStyle | WS_CHILD) >>> 0, 0, k * 20, 280, 18, hwnd, id, hInst, 0);
+      if (ch) { W(ch).noDraw = true; if (!first) first = ch; }
+    }
+    host.heap.release(tmp2);
+    if (!W(hwnd)) return 0;
+    const r = send(hwnd, WM.INITDIALOG, first, param);
+    if (!W(hwnd)) return 0;
+    if (r && first && W(first)) setFocus(first);
+    if (style & WS_VISIBLE) showWindow(w, 5);
+    return hwnd;
+  });
+  m.api(U + 'EndDialog', 2, (hwnd, result) => {
+    const w = W(hwnd);
+    if (!w) return 0;
+    w.dlgResult = result;
+    showWindow(w, 0);
+    return 1;
+  });
+  const dlgItem = (h, id) => { const w = W(h); return w ? w.children.find((x) => (x.id & 0xFFFF) === (id & 0xFFFF)) || null : null; };
+  m.api(U + 'SetDlgItemTextA', 3, (h, id, p) => { const c = dlgItem(h, id); if (!c) return 0; send(c.hwnd, WM.SETTEXT, 0, p); return 1; });
+  m.api(U + 'GetDlgItemTextA', 4, (h, id, p, n) => { const c = dlgItem(h, id); if (!c) { if (n) u8[p] = 0; return 0; } return m.writeCStr(p, c.text, n); });
+  m.api(U + 'SetDlgItemInt', 4, (h, id, v, signed) => { const c = dlgItem(h, id); if (!c) return 0; c.text = String(signed ? v | 0 : v >>> 0); host.dialogChanged(c.parent); return 1; });
+  m.api(U + 'GetDlgItemInt', 4, (h, id, pOk, signed) => { const c = dlgItem(h, id); const v = c ? parseInt(c.text, 10) : NaN; if (pOk) u32[pOk >> 2] = Number.isNaN(v) ? 0 : 1; return Number.isNaN(v) ? 0 : v; });
+  m.api(U + 'CheckDlgButton', 3, (h, id, v) => { const c = dlgItem(h, id); if (c) c.checked = v; return c ? 1 : 0; });
+  m.api(U + 'CheckRadioButton', 4, (h, first, last, id) => { const w = W(h); if (!w) return 0; for (const c of w.children) if ((c.id & 0xFFFF) >= first && (c.id & 0xFFFF) <= last) c.checked = (c.id & 0xFFFF) === id ? 1 : 0; return 1; });
+  m.api(U + 'IsDlgButtonChecked', 2, (h, id) => { const c = dlgItem(h, id); return c ? c.checked || 0 : 0; });
   m.api(U + 'WinHelpA', 4, (hwnd, pFile, cmd) => { if (cmd !== 2) host.showHelp(pFile ? m.cstr(pFile) : ''); return 1; });
   m.api(U + 'ReuseDDElParam', 5, (lp) => lp);
   m.api(U + 'UnpackDDElParam', 4, () => 0);
@@ -1140,12 +1239,37 @@ export function installUser32(m, host) {
   m.api(C + 'CommDlgExtendedError', 0, () => 0);
   m.api(C + 'PageSetupDlgA', 1, () => 0);
   m.api(C + 'PrintDlgA', 1, (p) => {
-    // PRINTDLG: flags at +20, hDC at +16. The browser's own print dialog appears when the page is sent.
+    // PRINTDLG is byte-packed (66 bytes): hDevMode +8, hDevNames +12, hDC +16, Flags +20.
+    // No Windows dialog is shown: there is one "printer", the browser's print dialog, which opens
+    // when the page is sent. The Bitmap plug-in first asks for the default printer
+    // (PD_RETURNDEFAULT | PD_RETURNDC) and needs its DEVMODE to choose the orientation
+    // (Bitmap.r32 0x10004550, 0x100045F0).
     const flags = u32[(p + 20) >> 2];
     if (!host.canPrint()) return 0;
-    u32[(p + 8) >> 2] = 0; u32[(p + 12) >> 2] = 0;
-    if (flags & 0x100) u32[(p + 16) >> 2] = host.createPrinterDC();   // PD_RETURNDC
-    u16[(p + 24) >> 1] = 1; u16[(p + 26) >> 1] = 1; u16[(p + 32) >> 1] = 1;
+    const get32 = (o) => m.view.getUint32(p + o, true);
+    const set32 = (o, v) => m.view.setUint32(p + o, v, true);
+    if (!get32(8)) {
+      const h = host.globalAlloc(0x42, 148);              // GHND: DEVMODEA
+      const d = host.globalLock(h);
+      m.writeCStr(d, 'Browser printer', 32);
+      u16[(d + 32) >> 1] = 0x0400; u16[(d + 34) >> 1] = 0x0400; u16[(d + 36) >> 1] = 148; u16[(d + 38) >> 1] = 0;
+      u32[(d + 40) >> 2] = 0x00000001 | 0x00000002 | 0x00000100;   // DM_ORIENTATION | DM_PAPERSIZE | DM_COPIES
+      u16[(d + 44) >> 1] = 1;                              // portrait
+      u16[(d + 46) >> 1] = 9;                              // DMPAPER_A4
+      u16[(d + 54) >> 1] = 1;                              // copies
+      host.globalUnlock(h);
+      set32(8, h);
+    }
+    if (!get32(12)) {
+      const h = host.globalAlloc(0x42, 64);                // DEVNAMES: three string offsets + default flag
+      const d = host.globalLock(h);
+      u16[d >> 1] = 8; u16[(d + 2) >> 1] = 16; u16[(d + 4) >> 1] = 32; u16[(d + 6) >> 1] = 1;
+      m.writeCStr(d + 8, 'WINSPOOL'); m.writeCStr(d + 16, 'Browser printer'); m.writeCStr(d + 32, 'LPT1:');
+      host.globalUnlock(h);
+      set32(12, h);
+    }
+    if ((flags & 0x100) && !get32(16)) set32(16, host.createPrinterDC());   // PD_RETURNDC
+    m.view.setUint16(p + 24, 1, true); m.view.setUint16(p + 26, 1, true); m.view.setUint16(p + 32, 1, true);
     return 1;
   });
   const P = 'WINSPOOL.DRV!';

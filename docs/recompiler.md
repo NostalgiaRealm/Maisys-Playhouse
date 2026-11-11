@@ -30,7 +30,7 @@ Full hashes: `original-game-decompiled/inventory/modules.csv` and `maisy.meta.js
 | `replacements.py` | The C-runtime helpers that are not lifted, found by byte signature in every module |
 | `build.py` | Module list, merged function inventory, emits the module, metadata and `out/report.json` |
 
-Current build: 9,938 functions discovered (439,819 instructions), 9,850 lifted, 88 not lifted (all inside Maisy.exe's C-runtime transcendental-math internals at 0x00496D50-0x0049921C, unreachable once their entry points map to `Math`; they trap if called). 20 irreducible functions use a dispatcher loop. Output 7.8 MB.
+Current build: 10,031 functions discovered, including the exception funclets and continuation entries, 9,943 lifted, 88 not lifted (all inside Maisy.exe's C-runtime transcendental-math internals at 0x00496D50-0x0049921C, unreachable once their entry points map to `Math`; they trap if called). 20 irreducible functions use a dispatcher loop. Output 7.8 MB.
 
 ## Model
 
@@ -60,7 +60,7 @@ Every module carries its own statically linked MSVC 5/6 C runtime, so helpers ar
 | `_strrchr` | MAISY, BITMAP | hand-written loop | scans backwards with the direction flag |
 | `asin acos atan atan2 sinh cosh tanh pow log log10 exp fmod` and their `_CI…` forms | MAISY, 24 entry points | host `Math` | the CRT's transcendental dispatchers keep x87 values live across jumps between labels |
 
-Nothing in this list is game logic. No function of the player or the plug-ins proper is replaced, patched or skipped, and there is no WinMain or message-loop replacement.
+Nothing in this list is game logic. No function of the player or the plug-ins proper is replaced, patched or skipped, and there is no WinMain or message-loop replacement. The 87 exception guards call the unmodified function body.
 
 ## Yielding to the browser
 
@@ -70,8 +70,8 @@ The player's loop is MFC's `CWinThread::Run` with its own pump override at 0x004
 
 ## Exceptions, threads, unsupported paths
 
-- **C++ exceptions / SEH**: frames are built as in the original, but there is no unwinder. `RaiseException` stops the game with the thrown type's name. None was raised in the checked path. Unresolved: whether any other path throws in normal operation.
-- **Threads**: `CreateThread` fails loudly. Static analysis found no caller outside MFC's own `AfxBeginThread`; none occurred in the checked path.
+- **C++ exceptions**: supported. Throws occur only in MFC's `AfxThrow…` helpers (9 call sites in Maisy.exe; the plug-ins never throw), and all 95 try blocks catch `CException*`. The original frames and tables are used unchanged: 626 handler stubs with their `FuncInfo`, 1,235 cleanup funclets, 96 catch funclets. Mechanics (`tools/recomp/build.py`, `source/host/eh.js`): a throw is a JavaScript exception; each of the 87 reachable functions that own a try block runs behind a host guard; the guard of the catching frame runs the cleanup funclets of the frames in between, stores the exception pointer, calls the catch funclet with the frame's ebp and re-enters the function at the continuation address the funclet returns (96 continuation entry points). Three more try-block functions exist but are never called. Checked with `tools/run-headless.mjs --throw-test 30`: `AfxThrowNotSupportedException` thrown inside a window procedure is caught by MFC's own handler, which shows its message box, and the game goes on. Structured exceptions (SEH, any other code) are not supported and stop the game.
+- **Threads**: none are needed. The only path to `CreateThread` is MFC's `AfxBeginThread`/`CWinThread::CreateThread` (0x004A705B, 0x004A7103), and nothing in the player or the plug-ins calls those (`original-game-decompiled/scripts/callers.py Maisy.exe 004a72d9`). No thread was requested in any activity. `CreateThread` still stops with a message if that ever proved wrong.
 - **Dynamically loaded libraries not in this build**: `QTIM32.DLL`/`CMGR32.DLL` (QuickTime 2), `MSVFW32.DLL`, `CTL3D32.DLL`, `version.dll`, `Wsock32.DLL`. `LoadLibraryA` returns NULL for them, as on a PC without those components. The player, EXTRAS and NETWORK each probe `QTIM32.DLL` at start-up and carry on. The authored content has no movie, QuickTime or MIDI object (`original-game-decompiled/authored-content/CONTENT_OVERVIEW.md`).
 - **MCI/MIDI**: `mciSendCommandA` returns "device not installed", `midiOutOpen` "no driver". The player sends one `MCI_OPEN` at start-up and continues.
 - **Instructions**: `lock` prefixes are treated as the plain instruction (one thread); `push/pop fs|gs` (one timer callback in EXTRAS) push zero / discard. Anything else unsupported makes the function trap and is listed in `tools/recomp/out/report.json` under `failed`.

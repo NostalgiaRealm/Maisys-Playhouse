@@ -19,7 +19,7 @@ const dpr = Number(opt('dpr', mobile ? 2 : 1));
 const outDir = path.resolve(opt('out', path.join(ROOT, 'tools/out/browser')));
 const url = opt('url', 'http://localhost:8377/');
 const DEFAULT_STEPS = 'wait:17000;shot:1-house;click:320,330;wait:9000;shot:2-foyer;click:45,45;wait:6000;shot:3-easel;click:320,245;wait:30000;shot:4-messy-room;click:85,395;wait:7000;shot:5-after-click;state';
-const steps = opt('steps', DEFAULT_STEPS).split(';').filter(Boolean);
+const steps = opt('steps', DEFAULT_STEPS).split(';;').join('\u0000').split(';').map((x) => x.split('\u0000').join(';')).filter(Boolean);   // ';;' is a literal semicolon
 fs.mkdirSync(outDir, { recursive: true });
 
 const browser = await chromium.launch({ headless: true, args: ['--autoplay-policy=no-user-gesture-required'] });
@@ -41,7 +41,8 @@ const scenePoint = async (x, y) => page.evaluate(([sx, sy]) => {
   return [c.left + (i.scene.x + (sx + 0.5) * i.scene.w / 640) * k, c.top + (i.scene.y + (sy + 0.5) * i.scene.h / 480) * k];
 }, [x, y]);
 for (const step of steps) {
-  const [cmd, arg = ''] = step.split(':');
+  const k = step.indexOf(':');
+  const cmd = k < 0 ? step : step.slice(0, k), arg = k < 0 ? '' : step.slice(k + 1);
   if (cmd === 'wait') await page.waitForTimeout(Number(arg));
   else if (cmd === 'shot') { const f = path.join(outDir, arg + '.png'); await page.screenshot({ path: f }); console.log('shot', f); }
   else if (cmd === 'click') {

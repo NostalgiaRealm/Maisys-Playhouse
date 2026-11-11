@@ -6,6 +6,7 @@ import { installKernel32, GAME_DIR } from './kernel32.js';
 import { installGdi32 } from './gdi32.js';
 import { installUser32 } from './user32.js';
 import { installWinmm } from './winmm.js';
+import { installEh } from './eh.js';
 import { Vfs } from './vfs.js';
 
 export { GameExit, GAME_DIR };
@@ -60,27 +61,13 @@ export async function createGame({ wasm, meta, codeMap, platform, files, options
     canPrint: () => platform.canPrint(),
     printPage: (s, name, n) => platform.printPage(s, name, n),
     cursorChanged: (c, visible) => platform.cursorChanged(c, visible),
+    showDialog: (spec) => platform.showDialog(spec),
+    hideDialog: (hwnd) => platform.hideDialog(hwnd),
     commandLine: options.commandLine,
     pollAsync: () => {},
     nextAsyncDue: () => Infinity,
     postMessage: (hwnd, msg, wp, lp) => { host.user.queue.push({ hwnd, msg, wp, lp, posted: true }); },
-    /**
-     * C++ exceptions (code 0xE06D7363) and SEH. The recompiled code has no unwinder: a throw that
-     * reaches here is reported with the thrown type's name so the path can be identified.
-     */
-    raiseException: (code, flags, n, args) => {
-      let what = 'code ' + (code >>> 0).toString(16);
-      if ((code >>> 0) === 0xE06D7363 && n >= 3) {
-        try {
-          const info = m.u32[(args + 8) >> 2];
-          const cta = m.u32[(info + 12) >> 2];
-          const ct = m.u32[(cta + 4) >> 2];
-          const td = m.u32[(ct + 4) >> 2];
-          what = 'C++ exception ' + m.cstr(td + 8);
-        } catch (e) { /* keep the code */ }
-      }
-      throw new Error('RaiseException: ' + what + ' (no handler support in this build)');
-    },
+    raiseException: () => { throw new Error('RaiseException before the exception support was installed'); },
     rtlUnwind: () => 0,
   };
   m.onUnimplemented = (name) => { throw new Error('Host function not implemented: ' + name); };
@@ -88,6 +75,7 @@ export async function createGame({ wasm, meta, codeMap, platform, files, options
   installGdi32(m, host);
   installUser32(m, host);
   installWinmm(m, host);
+  installEh(m, host);
 
   const unbound = Object.values(meta.thunks).filter((n) => !m.bound.has(n));
   host.unbound = unbound;

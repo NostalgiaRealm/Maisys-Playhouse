@@ -31,6 +31,24 @@ Path, three clicks from a cold start (scene coordinates, 640×480):
 
 Commands for the browser check: `node tools/serve.mjs --port 8377` and `node tools/browser-check.mjs` (desktop) or `node tools/browser-check.mjs --mobile --size 800x360 --dpr 2`.
 
+## Second pass (2026-11-11): every activity
+
+Asked for after the first release: play through every activity and fix what breaks. Done headless (Node, virtual clock) with the same host code as the browser, then spot-checked in Chromium.
+
+| What | How | Result |
+|---|---|---|
+| All 7 activities × 3 levels and the 3 rooms | `tools/play-all.sh 420 7` and `tools/play-all.sh 300 11`: enter through the Foyer (level chosen in the Panda menu), then a click or drag every 1.5 s at pseudo-random places for 5-7 minutes; 24 runs per seed | no error, no early exit, no message box in any run; contact sheets `tools/out/play/sheet-*.png` looked right by eye: Painting sets change, Dressing Up finishes and shows the window scene, Hide and Seek goes through several rounds and places, Train loads animals, Coloring fills regions, rooms animate their hotspots |
+| Gingerbread puzzle | targeted clicks (pick a piece, drop it within the authored 15-pixel radius) | all three pieces placed, the decorating stage with its Print and New Cookie buttons appears |
+| Printing (Gingerbread, Coloring) | press the activity's Print button | **was broken**, now a page comes out of the Bitmap plug-in: the picture centred on a 2400×3150 page (`tools/out/play/*-print-1.png`); in Chromium the page reaches the print frame |
+| Level change and save | Panda → level 3 → quit → yes; start again | `MAISY1.SAV` written; the next start goes straight to level 3 of Messy Room without choosing a level |
+| C++ exception | `--throw-test 30` | MFC's catch block ran, its message box appeared, play continued |
+| Player dialog | start without a CD drive (`--no-cd --no-drive --dialog-answer Quit`) | the original "Please insert the disk : 'Maisy_CD'" dialog with OK and Quit; Quit ends the program cleanly |
+| Missing data file | `--no-cd` | the player's own message "The segment file named 'D:\data2.mxx' could not be found. The project will be closed." and a clean exit |
+| Browser: pause and resume | Chromium, tab reported hidden for 5 s | no frame presented while hidden, audio context suspended; both resume |
+| Browser: resolution | preset 640 at 200 %, Auto at 50 % and 100 % in a 1024×768 window | canvas 1280×960, 512×384, 1024×768 |
+
+Random play does not prove an activity can be finished or that its feedback is right; it shows that nothing stops. What was seen to completion is listed in `PLAN.md`.
+
 ## Performance
 
 **Not measured.** The request asked for at least 30 FPS at 800×360 CSS px, DPR 2, 8× CPU throttle, with a baseline and optimisation runs. On 2026-11-11 the owner cancelled that step during the work ("Do NOT measure and optimize to 30 FPS target, it won't need optimization"). So there is no baseline, no before/after figure and no claim that the target is met.
@@ -44,6 +62,6 @@ What can be said without a measurement:
 ## Known limitations of this validation
 
 - No reference run of the original on Windows, so nothing here establishes parity; it establishes that the original code runs and behaves plausibly.
-- One activity, one level, one room variant. 47 of 65 scenes were never entered.
-- Audio was not heard; text rendering, dragging, keyboard, controller, hover mode, printing, pause/resume, save restore, resolution presets and render scales other than 100 % were not exercised.
+- The first pass covered one activity; the second pass entered every activity, level and room but mostly with random input.
+- Audio was not heard. Text appearance, keyboard, controller and hover mode were not exercised.
 - Headless Chromium on Linux only. No Firefox, Safari, Android or iOS device.

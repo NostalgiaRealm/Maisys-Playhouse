@@ -354,6 +354,27 @@ function messageBox(msg) {
   }
   $('dialog').hidden = false;
 }
+// A dialog of the player itself (for example "Please insert the disk"): its texts and buttons, shown
+// by the page; a press is sent back as the button's command.
+let gameDialog = 0;
+function showGameDialog(msg) {
+  if (msg.close !== undefined) { if (gameDialog === msg.close) { $('dialog').hidden = true; gameDialog = 0; } return; }
+  const { spec } = msg;
+  gameDialog = spec.hwnd;
+  $('dlg-title').textContent = spec.title;
+  $('dlg-text').textContent = spec.texts.join('\n');
+  const row = $('dlg-buttons');
+  row.textContent = '';
+  for (const b of spec.buttons) {
+    const el = document.createElement('button');
+    el.textContent = b.label || 'OK';
+    el.disabled = !!b.disabled;
+    if (b.isDefault) el.className = 'primary';
+    el.addEventListener('click', () => pushInput(8, spec.hwnd, b.id));
+    row.appendChild(el);
+  }
+  $('dialog').hidden = false;
+}
 function printPage(msg) {
   // The title printed a page (Gingerbread / Colouring "print" button): hand it to the browser's print dialog.
   const cv = document.createElement('canvas');
@@ -394,6 +415,7 @@ function onWorkerMessage(e) {
     case 'settings': saveJson(LS.store, msg.entries); break;
     case 'persist': try { if (msg.data) localStorage.setItem(LS.file + msg.path, b64(msg.data)); else localStorage.removeItem(LS.file + msg.path); } catch (err) { console.warn('could not save', msg.path, err); } break;
     case 'messagebox': messageBox(msg); break;
+    case 'dialog': showGameDialog(msg); break;
     case 'print': printPage(msg); break;
     case 'help': showHelp(); break;
     case 'beep': break;

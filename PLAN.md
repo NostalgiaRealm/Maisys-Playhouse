@@ -17,17 +17,27 @@ Updated 2026-11-11.
 
 - Measuring and optimising to 30 FPS under mobile emulation (cancelled 2026-11-11: "it won't need optimization"). No performance figures exist.
 
-## Not verified (see `docs/feature-parity.md`)
+## Second pass (2026-11-11): parity gaps and play-through
 
-All activities except Messy Room level 1 (playroom); the room scenes; levels 2-3; text; dragging; keyboard; controller; hover mode; printing; pause/resume; save restore; presets and render scales; audio by ear; any real phone or non-Chromium browser.
+- **C++ exceptions**: implemented with the original frames, tables and funclets (`docs/recompiler.md`); tested with a real MFC throw.
+- **Dialogs**: implemented (real windows, page overlay); tested with the original "insert the disk" prompt.
+- **Printing**: was broken (the Bitmap plug-in needs the default printer's DEVMODE from `PrintDlgA`); fixed; a printed page was produced from Gingerbread and from Coloring.
+- **Threads**: nothing to fix; no code path creates one (evidence in `docs/recompiler.md`).
+- **Fonts**: no text is visible in normal play (the only non-debug text labels hide themselves on Scene Started; 4 text calls in a whole session, all in the black-covered start-up scene). Left as browser-font approximations.
+- **Play-through**: all 7 activities at all 3 levels and the three rooms, two seeds, 5-7 minutes each of scripted random clicks and drags (`tools/play-all.sh`), plus targeted runs: Gingerbread puzzle completed to the decorating stage and printed, Coloring printed, level change, quit with save, restore of level 3 on the next start. No crash, stop or unimplemented call.
+
+## Not verified
+
+Completing every activity to its reward at every level (only Gingerbread's puzzle, Dressing Up level 1 and several Hide and Seek rounds were seen through); audio by ear; text appearance; controller; hover mode; any real phone or non-Chromium browser; comparison with the original on Windows.
 
 ## Known gaps in the host
 
-- No C++ exception unwinding, no worker threads, no player-created dialogs: each stops or fails loudly if reached. None was reached in the checked path.
+- Structured exceptions (SEH) and worker threads are not supported; neither is used.
 - Fonts are browser approximations.
+- Edit/list/combo controls in dialogs are not shown.
 
 ## Next actions
 
-1. Play each activity once at each level; fix what stops. Start with Gingerbread and Coloring (Bitmap plug-in capture/print) and anything with text or dragging.
-2. Listen to the audio; compare timing and look with the original under Windows 95 (86Box or the Win98 VM) to turn "observed in the port" into verified behaviour.
+1. Listen to the audio; compare timing and look with the original under Windows 95 (86Box or the Win98 VM).
+2. Play each activity to its end by hand at each level.
 3. If wanted after all: measure with `tools/browser-check.mjs --throttle 8` and `window.__perf`.

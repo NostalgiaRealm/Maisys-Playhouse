@@ -19,10 +19,30 @@ const opt = (name, def) => { const k = args.indexOf('--' + name); return k >= 0 
 const seconds = Number(opt('seconds', 20));
 const shots = String(opt('shots', '')).split(',').filter(Boolean).map(Number);
 const outDir = path.resolve(opt('out', path.join(ROOT, 'tools/out')));
+const shotPrefix = opt('prefix', 'shot');
 const trace = new Set(String(opt('trace', '')).split(',').filter(Boolean));
 const script = opt('script', null) ? JSON.parse(fs.readFileSync(opt('script'), 'utf8')) : [];
 const clicks = String(opt('clicks', '')).split(';').filter(Boolean).map((s) => s.split(',').map(Number));   // t,x,y
 for (const [t, x, y] of clicks) script.push({ t: t - 60, type: 'move', x, y }, { t, type: 'down', x, y, button: 0 }, { t: t + 90, type: 'up', x, y, button: 0 });
+// --monkey start,end,interval[,seed[,drag]]: pseudo-random clicks (and drags) inside the scene, away from the
+// House/Easel and Panda buttons in the top corners, to exercise an activity's interaction code.
+const monkey = String(opt('monkey', '')).split(',').filter(Boolean).map(Number);
+if (monkey.length >= 3) {
+  let seed = monkey[3] || 1;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF; return seed / 0x7FFFFFFF; };
+  const pt = () => { for (;;) { const x = Math.floor(rnd() * 620) + 10, y = Math.floor(rnd() * 460) + 10; if (y > 105 || (x > 110 && x < 530)) return [x, y]; } };
+  for (let t = monkey[0]; t < monkey[1]; t += monkey[2]) {
+    const [x, y] = pt();
+    script.push({ t: t - 60, type: 'move', x, y }, { t, type: 'down', x, y, button: 0 });
+    if (rnd() < (monkey[4] === undefined ? 0.3 : monkey[4])) {
+      const [x2, y2] = pt();
+      for (let k = 1; k <= 8; k++) script.push({ t: t + k * 40, type: 'move', x: Math.round(x + (x2 - x) * k / 8), y: Math.round(y + (y2 - y) * k / 8) });
+      script.push({ t: t + 400, type: 'up', x: x2, y: y2, button: 0 });
+    } else script.push({ t: t + 90, type: 'up', x, y, button: 0 });
+  }
+}
+for (const [t, vk] of String(opt('keys', '')).split(';').filter(Boolean).map((q) => q.split(',').map(Number))) script.push({ t, type: 'keydown', vk, ch: vk === 32 ? 32 : 0 }, { t: t + 80, type: 'keyup', vk });
+const quiet = args.includes('--quiet');
 script.sort((a, b) => a.t - b.t);
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -45,12 +65,13 @@ let scriptPos = 0;
 let nextShot = 0;
 const audioChunks = [];
 let audioFmt = null;
+const answered = new Set();
 const stats = { audioBytes: 0, audioSubmits: 0, messageBoxes: [], cursor: null };
 
 const saveShot = (label) => {
   const rgba = new Uint8Array(W * H * 4);
   for (let k = 0; k < W * H; k++) { const c = palette[pixels[k]]; rgba[k * 4] = c >> 16; rgba[k * 4 + 1] = (c >> 8) & 255; rgba[k * 4 + 2] = c & 255; rgba[k * 4 + 3] = 255; }
-  const f = path.join(outDir, `shot-${label}.png`);
+  const f = path.join(outDir, `${shotPrefix}-${label}.png`);
   fs.writeFileSync(f, png(W, H, rgba));
   const used = new Set(pixels).size;
   console.log(`[shot] ${f} at ${vt.toFixed(0)} ms, ${used} distinct indices, presents=${presents}`);
@@ -81,6 +102,8 @@ const fileReader = (p) => {
   return { size, reader: new RangeReader(size, (off, len) => { const b = Buffer.alloc(len); fs.readSync(fd, b, 0, len, off); return new Uint8Array(b.buffer, b.byteOffset, len); }) };
 };
 const settingsFile = path.join(outDir, 'settings.json');
+const savedDir = path.join(outDir, 'saved');
+const fresh = opt('fresh', null) !== null;
 const settings = new Map(opt('fresh', null) !== null || !fs.existsSync(settingsFile) ? [] : JSON.parse(fs.readFileSync(settingsFile, 'utf8')));
 
 const platform = {
@@ -96,7 +119,7 @@ const platform = {
     poll: () => {
       if (scriptPos >= script.length || script[scriptPos].t > vt) return null;
       const out = [];
-      while (scriptPos < script.length && script[scriptPos].t <= vt) { const e = script[scriptPos++]; console.log(`[${(vt / 1000).toFixed(3)}] input ${JSON.stringify(e)}`); out.push(e); }
+      while (scriptPos < script.length && script[scriptPos].t <= vt) { const e = script[scriptPos++]; if (!quiet) console.log(`[${(vt / 1000).toFixed(3)}] input ${JSON.stringify(e)}`); out.push(e); }
       return out;
     },
   },
@@ -108,12 +131,33 @@ const platform = {
   text,
   settings,
   saveSettings: () => fs.writeFileSync(settingsFile, JSON.stringify([...settings])),
-  persistFile: (p, data) => console.log(`[persist] ${p} ${data ? data.length + ' bytes' : 'deleted'}`),
+  persistFile: (p, data) => {
+    console.log(`[persist] ${p} ${data ? data.length + ' bytes' : 'deleted'}`);
+    const f = path.join(savedDir, encodeURIComponent(p));
+    if (data) { fs.mkdirSync(savedDir, { recursive: true }); fs.writeFileSync(f, data); } else fs.rmSync(f, { force: true });
+  },
   messageBox: (t, c, type) => { console.log(`[MessageBox] ${c}: ${t} (type ${type})`); stats.messageBoxes.push(t); return 1; },
   beep: () => {},
   showHelp: (f) => console.log('[help] ' + f),
   canPrint: () => true,
-  printPage: (s, name, n) => console.log(`[print] page ${n} of "${name}" ${s.w}x${s.h}`),
+  printPage: (s, name, n) => {
+    // save a quarter-size copy so the printed picture can be looked at
+    const k = 4, w = Math.floor(s.w / k), h = Math.floor(s.h / k);
+    const rgba = new Uint8Array(w * h * 4);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const o = (y * k * s.w + x * k) * 4; rgba[(y * w + x) * 4] = s.data[o + 2]; rgba[(y * w + x) * 4 + 1] = s.data[o + 1]; rgba[(y * w + x) * 4 + 2] = s.data[o]; rgba[(y * w + x) * 4 + 3] = 255; }
+    const f = path.join(outDir, `${shotPrefix}-print-${n}.png`);
+    fs.writeFileSync(f, png(w, h, rgba));
+    console.log(`[print] page ${n} of "${name}" ${s.w}x${s.h} -> ${f}`);
+  },
+  showDialog: (spec) => {
+    console.log(`[dialog] "${spec.title}": ${spec.texts.join(' / ')} [${spec.buttons.map((b) => b.id + '=' + b.label).join(', ')}]`);
+    stats.dialog = spec;
+    // --dialog-answer label: press that button a second later
+    const want = opt('dialog-answer', null);
+    const b = want && spec.buttons.find((x) => x.label.toLowerCase() === want.toLowerCase());
+    if (b && !answered.has(spec.hwnd)) { answered.add(spec.hwnd); script.splice(scriptPos, 0, { t: vt + 1000, type: 'command', hwnd: spec.hwnd, id: b.id }); }
+  },
+  hideDialog: (hwnd) => console.log(`[dialog] closed ${hwnd.toString(16)}`),
   cursorChanged: (c, visible) => { stats.cursor = c ? (c.css || c.key) : null; if (trace.has('win')) console.log(`[cursor] ${stats.cursor} visible=${visible}`); },
 };
 
@@ -123,14 +167,16 @@ const codeMap = new Uint8Array(fs.readFileSync(path.join(ROOT, 'public/game/mais
 const files = [
   { path: 'C:\\MAISY1\\Maisy.exe', ...fileReader(path.join(DISC, 'z_data/Maisy.exe')) },
   { path: 'C:\\MAISY1\\Data.mfx', ...fileReader(path.join(DISC, 'z_data/data.mfx')) },
-  { path: 'D:\\data2.mxx', ...fileReader(path.join(DISC, 'data2.mxx')) },
+  ...(args.includes('--no-cd') ? [] : [{ path: 'D:\\data2.mxx', ...fileReader(path.join(DISC, 'data2.mxx')) }]),
   { path: 'D:\\z_data\\Data.mfx', ...fileReader(path.join(DISC, 'z_data/data.mfx')) },
   { path: 'D:\\z_data\\Maisy.exe', ...fileReader(path.join(DISC, 'z_data/Maisy.exe')) },
 ];
 for (const f of fs.readdirSync(path.join(DISC, 'z_data/mPlugins'))) files.push({ path: 'C:\\MAISY1\\mPlugins\\' + f, ...fileReader(path.join(DISC, 'z_data/mPlugins', f)) });
 
+if (!fresh && fs.existsSync(savedDir)) for (const f of fs.readdirSync(savedDir)) files.push({ path: decodeURIComponent(f), data: new Uint8Array(fs.readFileSync(path.join(savedDir, f))), persist: true });
 const game = await createGame({ wasm, meta, codeMap, platform, files });
 const { m, host } = game;
+if (args.includes('--no-drive')) delete game.vfs.drives.D;      // no CD-ROM drive holding the disc
 host.traceFiles = trace.has('files');
 host.traceWin = trace.has('win');
 host.traceMsg = trace.has('msg');
@@ -143,6 +189,21 @@ m.onTrace = (addr, esp, eax, ecx, edx) => console.log(`  trace ${addr.toString(1
 const apiCounts = new Map();
 if (trace.has('count')) m.traceApi = (id) => apiCounts.set(m.thunkNames[id], (apiCounts.get(m.thunkNames[id]) || 0) + 1);
 
+// --throw-test seconds[,address]: at that time an MFC exception is thrown from inside a window procedure
+// (default AfxThrowNotSupportedException, Maisy.exe 0x004A3556), to exercise the C++ unwinder.
+const throwTest = String(opt('throw-test', '')).split(',').filter(Boolean);
+if (throwTest.length) {
+  host.traceEh = true;
+  const at = Number(throwTest[0]) * 1000, addr = throwTest[1] ? parseInt(throwTest[1], 16) : 0x004A3556;
+  let armed = true;
+  const poll = platform.input.poll;
+  platform.input.poll = () => {
+    if (armed && vt >= at) { armed = false; const top = host.user.topWindow(); console.log(`[throw-test] posting to ${top.hwnd.toString(16)}`); host.user.queue.push({ hwnd: top.hwnd, msg: 0x7FF1, wp: 0, lp: 0, posted: true }); }
+    return poll();
+  };
+  host.input.poll = platform.input.poll;
+  host.onDefWindowProc = (hwnd, msg) => { if (msg === 0x7FF1) { console.log('[throw-test] throwing from DefWindowProc'); m.call(addr, []); console.log('[throw-test] ERROR: the throw returned'); } };
+}
 const t0 = Date.now();
 let exit = null;
 try {

@@ -282,3 +282,43 @@ def find_replacements(img, ghidra):
     out.update(m)
     report.extend(mr)
     return out, eh, report
+
+
+def find_eh(img):
+    """MSVC C++ exception tables. Returns (stubs, unwind funclets, catch funclets, try owners).
+
+    A function with destructible locals or a try block registers a handler stub
+    'mov eax, offset FuncInfo; jmp __CxxFrameHandler'. FuncInfo (magic 0x19930520) lists the unwind
+    map (state -> previous state, cleanup funclet) and the try blocks with their catch funclets.
+    stubs: stub address -> FuncInfo address; both funclet sets hold code addresses that are only
+    ever reached from these tables.
+    """
+    import struct
+    stubs, unwind, catches = {}, set(), set()
+    base, mem = img.base, img.mem
+
+    def u32(a):
+        return struct.unpack_from('<I', mem, a - base)[0]
+    for lo, hi in img.text_ranges:
+        blob = bytes(mem[lo - base:hi - base])
+        p = blob.find(b'\xB8')
+        while p != -1 and p + 10 <= len(blob):
+            if blob[p + 5] == 0xE9:
+                fi = int.from_bytes(blob[p + 1:p + 5], 'little')
+                if base <= fi < img.end - 20 and not img.is_text(fi) and u32(fi) == 0x19930520:
+                    max_state, p_unwind, n_try, p_try = u32(fi + 4), u32(fi + 8), u32(fi + 12), u32(fi + 16)
+                    if max_state < 4096 and n_try < 256:
+                        stubs[lo + p] = fi
+                        for k in range(max_state):
+                            a = u32(p_unwind + k * 8 + 4)
+                            if a and img.is_text(a):
+                                unwind.add(a)
+                        for k in range(n_try):
+                            n_catch, p_h = u32(p_try + k * 20 + 12), u32(p_try + k * 20 + 16)
+                            for j in range(n_catch):
+                                a = u32(p_h + j * 16 + 12)
+                                if a and img.is_text(a):
+                                    catches.add(a)
+            p = blob.find(b'\xB8', p + 1)
+    with_try = {s for s, fi in stubs.items() if u32(fi + 12)}
+    return stubs, unwind, catches, with_try

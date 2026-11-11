@@ -1128,6 +1128,17 @@ export function installGdi32(m, host) {
     return 1;
   });
   m.api(G + 'EndDoc', 1, () => 1);
-  m.api(G + 'ResetDCA', 2, (hdc) => hdc);
+  m.api(G + 'ResetDCA', 2, (hdc, pDevMode) => {
+    // dmOrientation (DEVMODE +44): 1 portrait, 2 landscape. The page surface is re-made to match.
+    const dc = DC(hdc);
+    if (!dc || dc.surface.kind !== 'print') return hdc;
+    const landscape = pDevMode && u16[(pDevMode + 44) >> 1] === 2;
+    const w = landscape ? 3150 : 2400, h = landscape ? 2400 : 3150;
+    if (dc.surface.w !== w) {
+      dc.surface = { kind: 'print', w, h, bpp: 32, stride: w * 4, data: new Uint8Array(w * h * 4).fill(255), topDown: true, colors: null, cver: 1 };
+      dc.visW = w; dc.visH = h;
+    }
+    return hdc;
+  });
   m.api(G + 'Escape', 5, () => 0);
 }

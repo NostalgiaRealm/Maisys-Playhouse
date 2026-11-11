@@ -3,7 +3,7 @@
 The original Windows program of the 1999 CD-ROM, recompiled from x86 machine code to WebAssembly, running the original game data unmodified.
 
 - Runtime approach: **static x86-to-Wasm recompilation of the original mTropolis 2.0 player `Maisy.exe` and its six plug-ins** (`docs/recompiler.md`). No interpreter fallback, no hand-made activities.
-- Status: boots, plays through the intro into the house and the Messy Room activity with working clicks and sound output; quits through the credits and writes its save. One activity was checked; everything else is unverified (`docs/feature-parity.md`, `docs/validation.md`).
+- Status: boots, plays through the intro into the house and the Messy Room activity with working clicks and sound output; quits through the credits and writes its save. Every activity, level and room has been run with scripted random input without a stop, and printing, saving, dialogs and exceptions were exercised; what was and was not checked is in `docs/feature-parity.md` and `docs/validation.md`.
 - Source: <https://github.com/NostalgiaRealm/Maisys-Playhouse> and <https://gitlab.com/Nostalgia_Realm/Maisys-Playhouse>. Live at <https://games.nostalgiarealm.com/maisysplayhouse/> (`docs/hosting.md`).
 
 ## Requirements

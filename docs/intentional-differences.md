@@ -48,11 +48,15 @@ Everything here is a deliberate browser or mobile adaptation. Game logic, data, 
 
 ## Printing
 
-`PrintDlgA` does not show a Windows dialog: it returns a 2400×3150-pixel page (8×10.5 in at 300 dpi) and the finished page is opened in the browser's print dialog (or downloaded as PNG if printing is blocked). Unverified.
+No Windows print dialog is shown. `PrintDlgA` answers as a system with one default printer ("Browser printer", A4, 300 dpi, 2400×3150 printable pixels, landscape on request through `ResetDCA`); the Bitmap plug-in then lays out and draws its page exactly as it does for a real printer, and the finished page is opened in the browser's own print dialog (or downloaded as PNG if printing is blocked).
+
+## Dialogs
+
+The player's own dialogs (the reachable one is "Please insert the disk : 'Maisy_CD'") are created as real windows with real controls, so the original dialog code runs, but they are not drawn in Windows 95 style: the page shows the dialog's title, texts and buttons as an overlay and sends a button press back as the control's `WM_COMMAND`. `MessageBoxA` is shown the same way and blocks the game until answered.
 
 ## Not provided
 
-- Player-created modal dialogs (`CreateDialogIndirectParamA`) fail. `MessageBoxA` is shown as a page dialog and blocks the game until answered.
 - File pickers (`GetOpenFileNameA`/`GetSaveFileNameA`) return "cancelled".
+- Edit, list and combo controls inside dialogs are not shown (no reachable dialog has one).
 - QuickTime, Video for Windows, MIDI, MCI, Winsock, CTL3D: reported as not installed.
-- Worker threads and C++ exception unwinding: see `docs/recompiler.md`.
+- Structured exceptions (SEH) and worker threads: see `docs/recompiler.md`.

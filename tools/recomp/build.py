@@ -321,11 +321,64 @@ def build(args):
         if m['entry']:
             roots.append(m['entry'])
         roots.extend(e[2] for e in m['exports'])
+    # C++ exception handling: cleanup and catch funclets are entered by the host's unwinder with the
+    # frame's ebp; the code after a catch is entered again at its continuation address.
+    eh_stubs, eh_unwind, eh_catch, eh_with_try = RP.find_eh(img)
+    eh_conts = set()
+    for a in sorted(eh_catch):
+        try:
+            f = rec.build(a)
+        except Unsupported as e:
+            rec.problems['eh'].append('catch funclet %08x: %s' % (a, e))
+            continue
+        for b in f.blocks.values():
+            if b.kind == 'ret' and len(b.insns) >= 2:
+                i = b.insns[-2]
+                if i.mn == 'mov' and i.ops[0].type == R.X86_OP_REG and i.ops[0].reg == R.X86_REG_EAX and i.ops[1].type == R.X86_OP_IMM and img.is_text(i.ops[1].imm & 0xFFFFFFFF):
+                    eh_conts.add(i.ops[1].imm & 0xFFFFFFFF)
+    print('eh: %d handler stubs, %d with try blocks, %d unwind funclets, %d catch funclets, %d continuations' % (len(eh_stubs), len(eh_with_try), len(eh_unwind), len(eh_catch), len(eh_conts)))
+    roots.extend(sorted(eh_unwind | eh_catch | eh_conts))
+    rec.force_uses = set(eh_unwind | eh_catch | eh_conts)
     rec.extra_roots = roots
     rec.scan_entries()
     print('entries', len(rec.real_entries), 'address-taken', len(rec.address_taken), '%.1fs' % (time.time() - t0))
     rec.discover()
     print('functions', len(rec.funcs), 'instructions', sum(f.insn_count for f in rec.funcs.values()), '%.1fs' % (time.time() - t0))
+    # Functions that own a try block run under a host guard (source/host/eh.js): a C++ throw is a
+    # JavaScript exception that unwinds the wasm frames up to the guard of the catching function.
+    eh_guarded = {}
+    for a, fn in rec.funcs.items():
+        if a in rec.force_uses:
+            continue
+        for b in fn.blocks.values():
+            if not a <= b.start < a + 64:
+                continue
+            for i in b.insns:
+                if i.addr >= a + 64:
+                    break
+                for o in i.ops:
+                    if o.type == R.X86_OP_IMM and (o.imm & 0xFFFFFFFF) in eh_with_try:
+                        eh_guarded[a] = o.imm & 0xFFFFFFFF
+    owned = set(eh_guarded.values())
+    if eh_with_try - owned:
+        # the frame set-up can sit further into a long prologue: take the function whose body holds the push
+        for a, fn in rec.funcs.items():
+            if a in rec.force_uses or a in eh_guarded:
+                continue
+            for b in fn.blocks.values():
+                for i in b.insns:
+                    for o in i.ops:
+                        if o.type == R.X86_OP_IMM and (o.imm & 0xFFFFFFFF) in eh_with_try and (o.imm & 0xFFFFFFFF) not in owned and i.addr - a < 0x200:
+                            eh_guarded[a] = o.imm & 0xFFFFFFFF
+        owned = set(eh_guarded.values())
+    for sref in sorted(eh_with_try - owned):
+        rec.problems['eh'].append('try-block handler stub %08x: its function is not reachable (not discovered), no guard needed' % sref)
+    for a in eh_guarded:
+        if a in rec.replacements:
+            rec.problems['eh'].append('guarded function %08x is already replaced' % a)
+            continue
+        rec.replacements[a] = {'hook': 'eh_%08x' % a, 'pop': None, 'keep_body': True, 'guarded': True}
+    print('eh: %d guarded functions' % len(eh_guarded))
     rec.analyse_fpu()
     rec.analyse_inputs()
     uses = sorted('%08x %s %s' % (a, f.name, sorted(f.uses)) for a, f in rec.funcs.items() if f.uses)
@@ -485,8 +538,15 @@ def build(args):
             continue
         code_map.append([addr, len(table)])
         table.append(idx)
+    guard_bodies = {}
     for addr, idx in sorted(kept_bodies.items()):
-        code_map.append([addr, len(table)])
+        if rec.replacements[addr].get('guarded'):
+            # by address (calls through pointers, window procedures) the guard runs too; the host
+            # reaches the body through its table slot
+            code_map.append([addr, 1 + ctx.func_idx[addr] - ctx.thunk_first])
+            guard_bodies[addr] = len(table)
+        else:
+            code_map.append([addr, len(table)])
         table.append(idx)
     mod.table_size = len(table)
     if len(table) > 65535:
@@ -570,6 +630,7 @@ def build(args):
         'hooks': hooks,
         'firstFreeThunk': first_free_thunk,
         'fpuPrecisionBits': args.fpu_pc,
+        'eh': {'stubs': {str(k): v for k, v in eh_stubs.items()}, 'guardBodies': {str(k): v for k, v in guard_bodies.items()}},
     }
     # The code map is large: it goes to its own binary file (u32 address, u32 table index pairs).
     with open(os.path.join(args.out, 'maisy.codemap.bin'), 'wb') as f:

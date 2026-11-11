@@ -10,6 +10,7 @@ Updated 2026-11-11.
 4. **Viability proof**, in the Messy Room activity: original data loaded through the recompiled player, plug-ins initialised, scene shown, real clicks processed by original logic, PCM sound produced, worker yields and resumes in Chromium.
 5. **Browser page** (`source/web/`): worker game thread, canvas presenter, pointer/touch/keyboard/controller input, Web Audio, settings (resolution, render scale, smoothing, volume, hover mode), pause on hidden tab, persistence, print hand-off, service-worker isolation fallback.
 6. **Documentation**: this file, README, `docs/*`.
+7. **Source published** (2026-11-11, commit `57b2f13`): <https://github.com/NostalgiaRealm/Maisys-Playhouse> and <https://gitlab.com/Nostalgia_Realm/Maisys-Playhouse>, both public, same commit verified on each host. `data2.mxx` is stored in three pieces (`large-files/`).
 
 ## Dropped by the owner
 
@@ -17,7 +18,7 @@ Updated 2026-11-11.
 
 ## Blocked
 
-- **Publishing to games.nostalgiarealm.com/maisysplayhouse/** (requested 2026-11-11). `ssh Debian` fails: the SSH agent refuses to sign ("agent refused operation"), so nothing could be uploaded or inspected. The first publication also needs one root step on the server (new web folder and Nginx location). Everything is prepared: `docs/hosting.md`, `tools/deploy-website.sh`, `tools/server-setup-website.sh`. Note: `www.games.nostalgiarealm.com` does not resolve; the site is `games.nostalgiarealm.com`.
+- **Website: publishing to games.nostalgiarealm.com/maisysplayhouse/** (requested 2026-11-11). `ssh Debian` fails: the SSH agent refuses to sign ("agent refused operation"), so nothing could be uploaded or inspected. The first publication also needs one root step on the server (new web folder and Nginx location). Everything is prepared: `docs/hosting.md`, `tools/deploy-website.sh`, `tools/server-setup-website.sh`. Note: `www.games.nostalgiarealm.com` does not resolve; the site is `games.nostalgiarealm.com`.
 
 ## Not verified (see `docs/feature-parity.md`)
 

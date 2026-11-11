@@ -52,6 +52,8 @@ snippet = '''    # Maisy's Playhouse (1999).
     }
 
     location /maisysplayhouse/ {
+        # add_header here replaces the server-level one, so the site's revalidation rule is repeated.
+        add_header Cache-Control "no-cache" always;
         # The game thread needs SharedArrayBuffer: the page must be cross-origin isolated.
         add_header Cross-Origin-Opener-Policy same-origin always;
         add_header Cross-Origin-Embedder-Policy require-corp always;

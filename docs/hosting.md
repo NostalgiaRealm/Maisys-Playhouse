@@ -42,6 +42,6 @@ It builds `dist/`, mirrors it with rsync (about 300 MB the first time) and compa
 
 ## Status
 
-Not published yet as of 2026-11-11: the SSH agent on the workstation refused to sign for `Debian` ("agent refused operation"), so nothing was uploaded. See `PLAN.md`.
+Published 2026-11-11 at <https://games.nostalgiarealm.com/maisysplayhouse/>. Checked from outside right after: the page and its files match the build by SHA-256, the isolation and `Cache-Control: no-cache` headers are sent, `/maisysplayhouse` redirects to the folder, a range request on `data2.mxx` answers 206 with the right bytes, the wasm goes out gzip-compressed as `application/wasm`, and headless Chromium played from the live URL into the Messy Room and put the horse away. SSH for deploys uses the key in the plain agent (`SSH_AUTH_SOCK=/run/user/1000/ssh-agent.socket`); the desktop keyring agent refused to sign.
 
 The site distributes the original disc's data file. Whether that may be published is the owner's decision.
